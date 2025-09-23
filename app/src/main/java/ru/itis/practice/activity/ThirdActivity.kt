@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.itis.practice.ui.common.commonFontSize
 import ru.itis.practice.ui.common.commonModifier
+import ru.itis.practice.activity.FirstActivity
 
 class ThirdActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +37,8 @@ class ThirdActivity : ComponentActivity() {
                 )
 
                 Button(onClick = {
+                    FirstActivity.FirstActivityOld?.finish()
                     val intent = Intent(this@ThirdActivity, FirstActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(intent)
                 },
                     modifier = commonModifier

@@ -19,8 +19,12 @@ import ru.itis.practice.ui.common.commonFontSize
 import ru.itis.practice.ui.common.commonModifier
 
 class FirstActivity : ComponentActivity() {
+    companion object {
+        var FirstActivityOld: FirstActivity? = null
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirstActivityOld = this
         setContent {
             var text by remember { mutableStateOf("") }
 
@@ -57,6 +61,7 @@ class FirstActivity : ComponentActivity() {
                     val intent = Intent(this@FirstActivity, ThirdActivity::class.java)
                     intent.putExtra("text_key_3", text)
                     startActivity(intent)
+
                 },
                     modifier = commonModifier)
                 {
