@@ -21,7 +21,9 @@ import ru.itis.practice.ui.common.commonModifier
 class SecondActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val extraText = intent.getStringExtra("text_key_2") ?: "Screen 2"
+        val extraText = intent.getStringExtra("text_key_2")
+            ?.takeIf { it.isNotBlank() }
+            ?: "Screen 2"
         setContent {
 
             Column(

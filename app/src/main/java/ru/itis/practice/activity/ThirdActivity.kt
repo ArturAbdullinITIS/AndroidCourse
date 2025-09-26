@@ -22,7 +22,9 @@ import ru.itis.practice.activity.FirstActivity
 class ThirdActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val extraText = intent.getStringExtra("text_key_3") ?: "Screen 3"
+        val extraText = intent.getStringExtra("text_key_3")
+            ?.takeIf { it.isNotBlank() && it != "Screen 2" }
+            ?: "Screen 3"
         setContent {
             Column(
                 modifier = Modifier
