@@ -39,8 +39,8 @@ class ThirdActivity : ComponentActivity() {
                 )
 
                 Button(onClick = {
-                    FirstActivity.FirstActivityOld?.finish()
                     val intent = Intent(this@ThirdActivity, FirstActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivity(intent)
                 },
                     modifier = commonModifier

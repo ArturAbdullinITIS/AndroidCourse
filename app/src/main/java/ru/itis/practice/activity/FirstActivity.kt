@@ -19,12 +19,8 @@ import ru.itis.practice.ui.common.commonFontSize
 import ru.itis.practice.ui.common.commonModifier
 
 class FirstActivity : ComponentActivity() {
-    companion object {
-        var FirstActivityOld: FirstActivity? = null
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirstActivityOld = this
         setContent {
             var text by remember { mutableStateOf("") }
 
