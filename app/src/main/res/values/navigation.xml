@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="route_registration">reg</string>
     <string name="route_notes_pattern">notes?email={email}</string>
     <string name="route_create_note">create_note</string>
+
     <string name="arg_email">email</string>
 </resources>

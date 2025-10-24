@@ -1,9 +1,7 @@
 package ru.itis.notes.presentation.navigation
 
-import android.os.Bundle
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,12 +14,11 @@ import ru.itis.practice.R
 @Composable
 fun NavGraph() {
     val navController = rememberNavController()
-    val context = LocalContext.current
 
-    val regRoute = remember { context.getString(R.string.route_registration) }
-    val notesRoutePattern = remember { context.getString(R.string.route_notes_pattern) }
-    val createRoute = remember { context.getString(R.string.route_create_note) }
-    val emailArgKey = remember { context.getString(R.string.arg_email) }
+    val regRoute = stringResource(R.string.route_registration)
+    val notesRoutePattern = stringResource(R.string.route_notes_pattern)
+    val createRoute = stringResource(R.string.route_create_note)
+    val emailArgKey = stringResource(R.string.arg_email)
 
     NavHost(
         navController = navController,
@@ -36,8 +33,8 @@ fun NavGraph() {
             )
         }
 
-        composable(notesRoutePattern) {
-            val email = it.arguments?.getString(emailArgKey).toString()
+        composable(notesRoutePattern) { backStackEntry ->
+            val email = backStackEntry.arguments?.getString(emailArgKey).toString()
             NotesScreen(
                 email = email,
                 onCreateNoteButton = {
@@ -53,19 +50,4 @@ fun NavGraph() {
             )
         }
     }
-}
-
-
-sealed class Screen(val route: String) {
-    data object RegistrationScreen: Screen("reg")
-    data object NotesScreen: Screen("notes?email={email}") {
-        fun createRoute(email: String): String {
-            return "notes?email=$email"
-        }
-
-        fun getEmail(arguments: Bundle?): String {
-            return arguments?.getString("email").toString()
-        }
-    }
-    data object CreateNote: Screen("create_note")
 }

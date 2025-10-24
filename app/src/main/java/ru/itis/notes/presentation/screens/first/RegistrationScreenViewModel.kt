@@ -90,5 +90,5 @@ data class RegistrationScreenState(
     val errorMessage: String = "",
     val emailError: String = "",
     val passwordError: String = "",
-    val isPasswordVisible: Boolean = true
+    val isPasswordVisible: Boolean = false
 )
