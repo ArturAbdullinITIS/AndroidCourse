@@ -12,11 +12,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import ru.itis.practice.R
 
 @Composable
 fun EmailField(
@@ -29,7 +30,7 @@ fun EmailField(
         value = value,
         onValueChange = onValueChange,
         placeholder = {
-            Text(text = "Email")
+            Text(text = stringResource(R.string.email_hint))
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         shape = RoundedCornerShape(10.dp)
@@ -49,7 +50,7 @@ fun PasswordField(
         value = value,
         onValueChange = onValueChange,
         placeholder = {
-            Text(text = "Password")
+            Text(text = stringResource(R.string.password_hint))
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = if (isPasswordVisible) {
@@ -62,9 +63,9 @@ fun PasswordField(
                 Icon(
                     imageVector = Icons.Default.Create,
                     contentDescription = if (isPasswordVisible) {
-                        "Hide password"
+                        stringResource(R.string.hide_password)
                     } else {
-                        "Show password"
+                        stringResource(R.string.show_password)
                     }
                 )
             }
@@ -83,6 +84,6 @@ fun ContinueButton(
         onClick = onClick,
         shape = RoundedCornerShape(10.dp)
     ) {
-        Text(text = "Continue")
+        Text(text = stringResource(R.string.continue_button))
     }
 }

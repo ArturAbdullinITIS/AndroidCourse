@@ -5,7 +5,7 @@ import ru.itis.notes.data.NotesRepository
 
 class GetAllNotesUseCase(private val repo: NotesRepository) {
 
-    fun invoke(): Flow<List<Note>> {
+    operator fun invoke(): Flow<List<Note>> {
         return repo.getAllNotes()
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,83 +34,96 @@ fun RegistrationScreen(
             onButtonClick(state.email)
         }
     }
+    Scaffold(
+        modifier = modifier
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding()
-            .imePadding()
-    ) {
+    ) { innerPadding ->
         Column(
             modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp)
+                .fillMaxSize()
+                .navigationBarsPadding()
+                .imePadding()
+                .padding(innerPadding)
         ) {
-            Spacer(modifier = Modifier.height(32.dp))
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(32.dp))
 
-            EmailField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.email,
-                onValueChange = {
-                    viewModel.processCommand(RegistrationScreenCommand.InputEmail(it))
+                EmailField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = state.email,
+                    onValueChange = {
+                        viewModel.processCommand(RegistrationScreenCommand.InputEmail(it))
+                    }
+                )
+
+
+                if (state.emailError.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = state.emailError,
+                        color = Color.Red,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                } else {
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
-            )
 
-            if (state.emailError.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = state.emailError,
-                    color = Color.Red,
-                    modifier = Modifier.padding(start = 16.dp)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                PasswordField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = state.password,
+                    onValueChange = {
+                        viewModel.processCommand(RegistrationScreenCommand.InputPassword(it))
+                    },
+                    isPasswordVisible = state.isPasswordVisible,
+                    onTogglePasswordVisibility = {
+                        viewModel.processCommand(RegistrationScreenCommand.ChangeVisibility)
+                    }
                 )
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            PasswordField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.password,
-                onValueChange = {
-                    viewModel.processCommand(RegistrationScreenCommand.InputPassword(it))
-                },
-                isPasswordVisible = state.isPasswordVisible,
-                onTogglePasswordVisibility = {
-                    viewModel.processCommand(RegistrationScreenCommand.ChangeVisibility)
+                if (state.passwordError.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = state.passwordError,
+                        color = Color.Red,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                } else {
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
-            )
 
-            if (state.passwordError.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = state.passwordError,
-                    color = Color.Red,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
+                if (state.errorMessage.isNotEmpty() && state.emailError.isEmpty() && state.passwordError.isEmpty()) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = state.errorMessage,
+                        color = Color.Red
+                    )
+                } else {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
             }
 
-            if (state.errorMessage.isNotEmpty() && state.emailError.isEmpty() && state.passwordError.isEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = state.errorMessage,
-                    color = Color.Red
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                ContinueButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        viewModel.processCommand(RegistrationScreenCommand.Register)
+                    }
                 )
             }
-
-            Spacer(modifier = Modifier.height(32.dp))
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-        ) {
-            ContinueButton(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    viewModel.processCommand(RegistrationScreenCommand.Register)
-                }
-            )
-        }
     }
+
 }

@@ -45,8 +45,6 @@ class RegistrationScreenViewModel {
 
                     val passwordValidationResult = validatePasswordUseCase(password)
                     val passwordError = passwordValidationResult != "Success"
-
-                    // Если есть ошибки, показываем их
                     if (emailError || passwordError) {
                         currentState.copy(
                             success = false,

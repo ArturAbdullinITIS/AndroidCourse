@@ -8,19 +8,20 @@ import ru.itis.notes.domain.Note
 
 object NotesRepositoryImpl: NotesRepository {
 
-    private val Notes = MutableStateFlow<List<Note>>(listOf())
+
+    private val notes = MutableStateFlow<List<Note>>(listOf())
 
 
 
     override fun addNote(title: String, content: String) {
-        Notes.update { oldList ->
+        notes.update { oldList ->
             val note = Note(oldList.size, title, content)
             oldList + note
         }
     }
 
     override fun getAllNotes(): Flow<List<Note>> {
-        return Notes.asStateFlow()
+        return notes.asStateFlow()
     }
 
 }
