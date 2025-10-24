@@ -2,16 +2,16 @@ package ru.itis.notes.domain
 
 class ValidatePasswordUseCase {
 
-    operator fun invoke(password: String): String {
-        val result_msg: String
+    operator fun invoke(password: String): ValidationResult {
+        val result: ValidationResult
         if(password.isBlank()) {
-            result_msg = "Password cannot be blank!"
+            result = ValidationResult.BLANK_PASSWORD
         } else if(password.length < 8) {
-            result_msg = "Password is too short!"
+            result = ValidationResult.SHORT_PASSWORD
         } else {
-            result_msg = "Success"
+            result = ValidationResult.SUCCESS
         }
-        return result_msg
+        return result
     }
 
 }

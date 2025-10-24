@@ -1,5 +1,6 @@
 package ru.itis.notes.presentation.screens.first
 
+import android.app.Application
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,14 +20,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import ru.itis.notes.domain.ResourceProvider
 
 @Composable
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
-    viewModel: RegistrationScreenViewModel = remember { RegistrationScreenViewModel() },
     onButtonClick: (String) -> Unit
 ) {
+    val context = LocalContext.current
+    val viewModel: RegistrationScreenViewModel = remember {
+        RegistrationScreenViewModel(ResourceProvider(context))
+    }
+
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(state.success) {

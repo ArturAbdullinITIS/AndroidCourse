@@ -3,11 +3,16 @@ package ru.itis.notes.presentation.screens.first
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import ru.itis.notes.domain.ResourceProvider
 import ru.itis.notes.domain.ValidateEmailUseCase
 import ru.itis.notes.domain.ValidatePasswordUseCase
 import ru.itis.notes.domain.ValidateRegistrationFormUseCase
+import ru.itis.notes.domain.ValidationResult
 
-class RegistrationScreenViewModel {
+class RegistrationScreenViewModel(
+    private val resourceProvider: ResourceProvider
+) {
+
     private val validateRegistrationFormUseCase = ValidateRegistrationFormUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
     private val validateEmailUseCase = ValidateEmailUseCase()
@@ -41,16 +46,16 @@ class RegistrationScreenViewModel {
                     val password = currentState.password
 
                     val emailValidationResult = validateEmailUseCase(email)
-                    val emailError = emailValidationResult != "Success"
+                    val emailError = emailValidationResult != ValidationResult.SUCCESS
 
                     val passwordValidationResult = validatePasswordUseCase(password)
-                    val passwordError = passwordValidationResult != "Success"
+                    val passwordError = passwordValidationResult != ValidationResult.SUCCESS
                     if (emailError || passwordError) {
                         currentState.copy(
                             success = false,
-                            emailError = if (emailError) emailValidationResult else "",
-                            passwordError = if (passwordError) passwordValidationResult else "",
-                            errorMessage = if (emailError) emailValidationResult else passwordValidationResult
+                            emailError = if (emailError) resourceProvider.getString(emailValidationResult.resId) else "",
+                            passwordError = if (passwordError) resourceProvider.getString(passwordValidationResult.resId)  else "",
+                            errorMessage = if (emailError) resourceProvider.getString(emailValidationResult.resId)  else resourceProvider.getString(passwordValidationResult.resId)
                         )
                     } else if (validateRegistrationFormUseCase(email, password)) {
                         currentState.copy(
@@ -61,8 +66,7 @@ class RegistrationScreenViewModel {
                         )
                     } else {
                         currentState.copy(
-                            success = false,
-                            errorMessage = "Form validation failed"
+                            success = false
                         )
                     }
                 }

@@ -6,6 +6,7 @@ class ValidateRegistrationFormUseCase() {
 
 
     operator fun invoke(email: String, password: String): Boolean {
-        return validateEmailUseCase(email).equals("Success") && validatePasswordUseCase(password).equals("Success")
+        return validateEmailUseCase(email) == ValidationResult.SUCCESS &&
+                validatePasswordUseCase(password) == ValidationResult.SUCCESS
     }
 }

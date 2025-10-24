@@ -1,18 +1,21 @@
 package ru.itis.notes.domain
 
+import android.content.Context
+import ru.itis.notes.presentation.utils.RegEx
+
 class ValidateEmailUseCase {
 
 
-    operator fun invoke(email: String): String {
-        val result_msg: String
+    operator fun invoke(email: String): ValidationResult {
+        val result: ValidationResult
 
         if(email.isBlank()) {
-            result_msg = "Email cannot be blank!"
-        } else if(!email.matches("^[A-Za-z0-9_.-]+@[A-Za-z0-9.-]+\$".toRegex())) {
-            result_msg = "Incorrect email form"
+            result = ValidationResult.BLANK_EMAIL
+        } else if(!email.matches(RegEx.EMAIL_REGEX)) {
+            result = ValidationResult.INCORRECT_EMAIL_FORMAT
         } else {
-            result_msg = "Success"
+            result = ValidationResult.SUCCESS
         }
-        return result_msg
+        return result
     }
 }
