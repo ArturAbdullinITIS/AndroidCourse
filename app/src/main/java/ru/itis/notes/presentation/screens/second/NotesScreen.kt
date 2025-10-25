@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -30,6 +33,7 @@ fun NotesScreen(
     onCreateNoteButton: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -51,6 +55,14 @@ fun NotesScreen(
                 fontSize = 22.sp
             )
 
+            DropdownTheme(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                expanded = expanded,
+                onExpandedChange = { expanded = it }
+            )
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -63,7 +75,7 @@ fun NotesScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp),
                         note = note,
-                        backgroundColor = Color.LightGray
+                        backgroundColor = MaterialTheme.colorScheme.surface
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }

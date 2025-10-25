@@ -50,22 +50,21 @@ class RegistrationScreenViewModel(
 
                     val passwordValidationResult = validatePasswordUseCase(password)
                     val passwordError = passwordValidationResult != ValidationResult.SUCCESS
-                    if (emailError || passwordError) {
-                        currentState.copy(
+                    when {
+                        emailError || passwordError -> currentState.copy(
                             success = false,
                             emailError = if (emailError) resourceProvider.getString(emailValidationResult.resId) else "",
-                            passwordError = if (passwordError) resourceProvider.getString(passwordValidationResult.resId)  else "",
-                            errorMessage = if (emailError) resourceProvider.getString(emailValidationResult.resId)  else resourceProvider.getString(passwordValidationResult.resId)
+                            passwordError = if (passwordError) resourceProvider.getString(passwordValidationResult.resId) else "",
+                            errorMessage = if (emailError) resourceProvider.getString(emailValidationResult.resId)
+                                            else resourceProvider.getString(passwordValidationResult.resId)
                         )
-                    } else if (validateRegistrationFormUseCase(email, password)) {
-                        currentState.copy(
+                        validateRegistrationFormUseCase(email, password) -> currentState.copy(
                             success = true,
                             emailError = "",
                             passwordError = "",
                             errorMessage = ""
                         )
-                    } else {
-                        currentState.copy(
+                        else -> currentState.copy(
                             success = false
                         )
                     }
