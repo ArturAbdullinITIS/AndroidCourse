@@ -1,6 +1,6 @@
+// NotificationRepository.kt
 package ru.itis.notifications.domain.repositories
 
-import ru.itis.notifications.domain.entities.Notification
 import ru.itis.notifications.domain.entities.NotificationPriority
 
 interface NotificationRepository {

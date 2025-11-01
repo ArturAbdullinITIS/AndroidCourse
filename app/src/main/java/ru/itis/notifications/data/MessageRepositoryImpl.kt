@@ -6,10 +6,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import ru.itis.notifications.domain.entities.Message
 import ru.itis.notifications.domain.repositories.MessageRepository
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MessageRepositoryImpl : MessageRepository {
+class MessageRepositoryImpl @Inject constructor(): MessageRepository {
 
     private val messages = MutableStateFlow<List<Message>>(listOf())
 
