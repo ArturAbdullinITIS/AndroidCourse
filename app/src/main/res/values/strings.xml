@@ -1,3 +1,64 @@
 <resources>
-    <string name="app_name">Practice</string>
+    <string name="app_name">Notifications</string>
+
+    <!-- Navigation -->
+    <string name="nav_settings">Settings</string>
+    <string name="nav_edit">Edit</string>
+    <string name="nav_messages">Messages</string>
+
+    <!-- Navigation Routes -->
+    <string name="route_settings">settings</string>
+    <string name="route_edit">edit</string>
+    <string name="route_messages">messages</string>
+
+    <!-- Notification Settings Screen -->
+    <string name="notification_title_placeholder">Notification Title</string>
+    <string name="notification_content_placeholder">Notification Content</string>
+    <string name="select_priority">Select Priority</string>
+    <string name="expandable_notification">Expandable Notification</string>
+    <string name="open_app_on_click">Open App on Click</string>
+    <string name="add_reply_action">Add Reply Action</string>
+    <string name="create_notification">Create Notification</string>
+    <string name="error_title_empty">Title cannot be blank!</string>
+
+    <!-- Notification Edit Screen -->
+    <string name="notification_id_placeholder">Notification ID</string>
+    <string name="update_notification">Update Notification</string>
+    <string name="clear_notifications">Clear Notifications</string>
+    <string name="error_id_empty">ID cannot be empty!</string>
+    <string name="toast_notification_not_exists">Notification does not exists</string>
+    <string name="toast_no_notifications">No notifications</string>
+
+    <!-- User Messages Screen -->
+    <string name="message_placeholder">Message</string>
+    <string name="send_button_description">Send</string>
+
+    <!-- MainActivity -->
+    <string name="toast_notifications_enabled">Notifications enabled</string>
+    <string name="toast_notifications_disabled">Notifications DISABLED - enable in settings!</string>
+
+    <!-- Notification Manager -->
+    <string name="reply_action_label">Enter your reply</string>
+    <string name="reply_action_button">Reply</string>
+
+    <!-- Notification Channels -->
+    <string name="channel_min_priority">Min Priority</string>
+    <string name="channel_low_priority">Low Priority</string>
+    <string name="channel_default_priority">Default Priority</string>
+    <string name="channel_high_priority">High Priority</string>
+
+    <!-- Intent Keys -->
+    <string name="key_title">title</string>
+    <string name="key_content">content</string>
+    <string name="key_text_reply">key_text_reply</string>
+    <string name="extra_notification_id">extra_notification_id</string>
+
+    <!-- Actions -->
+    <string name="reply_action">ru.itis.notifications.REPLY_ACTION</string>
+
+    <!-- Channel IDs -->
+    <string name="channel_id_min">min_priority</string>
+    <string name="channel_id_low">low_priority</string>
+    <string name="channel_id_default">default_priority</string>
+    <string name="channel_id_high">high_priority</string>
 </resources>
