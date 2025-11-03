@@ -12,8 +12,10 @@ activityCompose = "1.11.0"
 composeBom = "2025.10.01"
 ksp = "2.0.21-1.0.27"
 hiltAndroid = "2.57.2"
+materialIconsExtended = "1.7.8"
 
 [libraries]
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }

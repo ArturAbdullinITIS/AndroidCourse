@@ -34,7 +34,6 @@ fun NotificationSettingsScreen(
 
     Scaffold(
         modifier = modifier,
-
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -49,7 +48,6 @@ fun NotificationSettingsScreen(
                     .weight(1f)
                     .padding(horizontal = 16.dp)
             ) {
-                Spacer(modifier = Modifier.height(32.dp))
                 TitleField(
                     modifier = Modifier.fillMaxWidth(),
                     value = state.title,
@@ -59,9 +57,8 @@ fun NotificationSettingsScreen(
                 )
                 if(state.errorMessage.isNotBlank()) {
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = state.errorMessage,
-                        color = Color.Red,
+                    ErrorMessage(
+                        message = state.errorMessage,
                         modifier = Modifier.padding(start = 16.dp)
                     )
                 } else {

@@ -1,20 +1,22 @@
 package ru.itis.notifications.presentation.screens.first
 
-import android.util.Log
-import androidx.compose.runtime.produceState
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.itis.notifications.R
 import ru.itis.notifications.domain.entities.NotificationPriority
 import ru.itis.notifications.domain.usecases.CreateNotificationUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class NotificationSettingsViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val createNotificationUseCase: CreateNotificationUseCase
 ): ViewModel() {
     private val _state = MutableStateFlow(
@@ -74,7 +76,7 @@ class NotificationSettingsViewModel @Inject constructor(
                 } else {
                     _state.update { prState ->
                         prState.copy(
-                            errorMessage = "Title cannot be blank!"
+                            errorMessage = context.getString(R.string.error_title_empty)
                         )
                     }
                 }
@@ -86,8 +88,6 @@ class NotificationSettingsViewModel @Inject constructor(
 
 
 sealed interface NotificationSettingsCommand {
-
-
     data class InputTitle(val title: String): NotificationSettingsCommand
     data class InputContent(val content: String): NotificationSettingsCommand
     data class ExpandableSwitch(val isExpandable: Boolean): NotificationSettingsCommand
@@ -107,5 +107,3 @@ data class NotificationSettingsState(
     val titleError: Boolean = true,
     val errorMessage: String = ""
 )
-
-

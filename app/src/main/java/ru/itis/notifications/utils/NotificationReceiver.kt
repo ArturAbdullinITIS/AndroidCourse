@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.itis.notifications.R
 import ru.itis.notifications.domain.usecases.AddMessageUseCase
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class NotificationReceiver : BroadcastReceiver() {
     lateinit var notificationManager: AppNotificationManager
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == AppNotificationManager.REPLY_ACTION) {
+        if (intent.action == context.getString(R.string.reply_action)) {
             val remoteInput = RemoteInput.getResultsFromIntent(intent)
             if (remoteInput != null) {
                 val replyText = remoteInput.getCharSequence(
@@ -33,7 +34,7 @@ class NotificationReceiver : BroadcastReceiver() {
                     Log.d("NotificationReceiver", "Reply received: $replyText")
 
                     CoroutineScope(Dispatchers.IO).launch {
-                        addMessageUseCase(replyText)
+                        addMessageUseCase(replyText, true)
                     }
 
                     val notificationId = intent.getIntExtra(

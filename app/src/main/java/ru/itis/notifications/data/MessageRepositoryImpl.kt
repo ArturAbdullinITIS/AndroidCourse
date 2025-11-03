@@ -24,7 +24,6 @@ class MessageRepositoryImpl @Inject constructor(): MessageRepository {
             val message = Message(
                 id = oldList.size,
                 content = content,
-                timestamp = System.currentTimeMillis(),
                 isFromNotification = isFromNotification
             )
             oldList + message

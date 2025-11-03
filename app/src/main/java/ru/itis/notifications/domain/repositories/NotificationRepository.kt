@@ -1,6 +1,8 @@
 // NotificationRepository.kt
 package ru.itis.notifications.domain.repositories
 
+import kotlinx.coroutines.flow.Flow
+import ru.itis.notifications.domain.entities.Notification
 import ru.itis.notifications.domain.entities.NotificationPriority
 
 interface NotificationRepository {
@@ -15,4 +17,6 @@ interface NotificationRepository {
     suspend fun updateNotification(id: Int, content: String): Boolean
     suspend fun cancelAllNotifications()
     suspend fun notificationExists(id: Int): Boolean
+
+    fun getAllNotifications(): Flow<List<Notification>>
 }

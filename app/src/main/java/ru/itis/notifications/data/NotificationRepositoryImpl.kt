@@ -1,7 +1,9 @@
 package ru.itis.notifications.data
 
 import android.util.Log
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import ru.itis.notifications.domain.entities.Notification
 import ru.itis.notifications.domain.entities.NotificationPriority
@@ -70,5 +72,9 @@ class NotificationRepositoryImpl @Inject constructor(
 
     override suspend fun notificationExists(id: Int): Boolean {
         return notificationManager.notificationExists(id)
+    }
+
+    override fun getAllNotifications(): Flow<List<Notification>> {
+        return notifications.asStateFlow()
     }
 }

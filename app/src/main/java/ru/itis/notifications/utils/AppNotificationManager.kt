@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ru.itis.notifications.R
 import ru.itis.notifications.domain.entities.Notification
 import ru.itis.notifications.domain.entities.NotificationPriority
 import ru.itis.notifications.presentation.main.MainActivity
@@ -25,7 +26,6 @@ class AppNotificationManager @Inject constructor(
 
     companion object {
         const val KEY_TEXT_REPLY = "key_text_reply"
-        const val REPLY_ACTION = "ru.itis.notifications.REPLY_ACTION"
         const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
     }
 
@@ -52,8 +52,8 @@ class AppNotificationManager @Inject constructor(
         if (notification.shouldOpenApp) {
             val intent = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                putExtra("title", notification.title)
-                putExtra("content", notification.content)
+                putExtra(context.getString(R.string.key_title), notification.title)
+                putExtra(context.getString(R.string.key_content), notification.content)
             }
             val pendingIntent = PendingIntent.getActivity(
                 context,
@@ -66,11 +66,11 @@ class AppNotificationManager @Inject constructor(
 
         if (notification.hasReplyAction) {
             val remoteInput = RemoteInput.Builder(KEY_TEXT_REPLY)
-                .setLabel("Enter your reply")
+                .setLabel(context.getString(R.string.reply_action_label))
                 .build()
 
             val replyIntent = Intent(context, NotificationReceiver::class.java).apply {
-                action = REPLY_ACTION
+                action = context.getString(R.string.reply_action)
                 putExtra(EXTRA_NOTIFICATION_ID, notification.id)
             }
 
@@ -83,7 +83,7 @@ class AppNotificationManager @Inject constructor(
 
             val replyAction = NotificationCompat.Action.Builder(
                 android.R.drawable.ic_menu_send,
-                "Reply",
+                context.getString(R.string.reply_action_button),
                 replyPendingIntent
             )
                 .addRemoteInput(remoteInput)
@@ -118,10 +118,10 @@ class AppNotificationManager @Inject constructor(
 
     private fun getChannelId(priority: NotificationPriority): String {
         return when (priority) {
-            NotificationPriority.MIN -> "min_priority"
-            NotificationPriority.LOW -> "low_priority"
-            NotificationPriority.MEDIUM -> "default_priority"
-            NotificationPriority.HIGH -> "high_priority"
+            NotificationPriority.MIN -> context.getString(R.string.channel_id_min)
+            NotificationPriority.LOW -> context.getString(R.string.channel_id_low)
+            NotificationPriority.MEDIUM -> context.getString(R.string.channel_id_default)
+            NotificationPriority.HIGH -> context.getString(R.string.channel_id_high)
         }
     }
 
@@ -129,23 +129,23 @@ class AppNotificationManager @Inject constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channels = listOf(
                 NotificationChannel(
-                    "min_priority",
-                    "Min Priority",
+                    context.getString(R.string.channel_id_min),
+                    context.getString(R.string.channel_min_priority),
                     NotificationManager.IMPORTANCE_MIN
                 ),
                 NotificationChannel(
-                    "low_priority",
-                    "Low Priority",
+                    context.getString(R.string.channel_id_low),
+                    context.getString(R.string.channel_low_priority),
                     NotificationManager.IMPORTANCE_LOW
                 ),
                 NotificationChannel(
-                    "default_priority",
-                    "Default Priority",
+                    context.getString(R.string.channel_id_default),
+                    context.getString(R.string.channel_default_priority),
                     NotificationManager.IMPORTANCE_DEFAULT
                 ),
                 NotificationChannel(
-                    "high_priority",
-                    "High Priority",
+                    context.getString(R.string.channel_id_high),
+                    context.getString(R.string.channel_high_priority),
                     NotificationManager.IMPORTANCE_HIGH
                 )
             )

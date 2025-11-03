@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.itis.notifications.domain.entities.NotificationPriority
+import ru.itis.notifications.R
 
 
 @Composable
@@ -36,7 +37,7 @@ fun TitleField(
         value = value,
         onValueChange = onValueChange,
         placeholder = {
-            Text(text = "Notification Title")
+            Text(text = stringResource(R.string.notification_title_placeholder))
         },
         shape = RoundedCornerShape(10.dp)
     )
@@ -53,7 +54,7 @@ fun ContentField(
         value = value,
         onValueChange = onValueChange,
         placeholder = {
-            Text(text = "Notification Content")
+            Text(text = stringResource(R.string.notification_content_placeholder))
         },
         shape = RoundedCornerShape(10.dp)
     )
@@ -81,9 +82,8 @@ fun PriorityDropdown(
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
             modifier = Modifier
-                .menuAnchor()  // ← КРИТИЧЕСКИ ВАЖНО!
                 .fillMaxWidth(),
-            placeholder = { Text("Select Priority") },
+            placeholder = { Text(stringResource(R.string.select_priority)) },
             shape = RoundedCornerShape(10.dp)
         )
 
@@ -91,7 +91,7 @@ fun PriorityDropdown(
             expanded = expanded,
             onDismissRequest = { onExpandedChange(false) }
         ) {
-            NotificationPriority.values().forEach { priority ->
+            NotificationPriority.entries.forEach { priority ->
                 DropdownMenuItem(
                     text = { Text(priority.name) },
                     onClick = {
@@ -116,7 +116,7 @@ fun ExpandableSwitch(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Expandable Notification",
+            text = stringResource(R.string.expandable_notification),
             modifier = Modifier.weight(1f)
         )
         Switch(
@@ -138,7 +138,7 @@ fun OpenAppSwitch(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Open App on Click",
+            text = stringResource(R.string.open_app_on_click),
             modifier = Modifier.weight(1f)
         )
         Switch(
@@ -159,7 +159,7 @@ fun ReplyActionSwitch(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Add Reply Action",
+            text = stringResource(R.string.add_reply_action),
             modifier = Modifier.weight(1f)
         )
         Switch(
@@ -181,7 +181,7 @@ fun CreateNotificationButton(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     ) {
-        Text("Create Notification")
+        Text(stringResource(R.string.create_notification))
     }
 }
 @Composable
@@ -197,5 +197,3 @@ fun ErrorMessage(
         )
     }
 }
-
-

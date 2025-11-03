@@ -12,6 +12,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
+import ru.itis.notifications.R
+import ru.itis.notifications.presentation.navigation.NavBar
 import ru.itis.notifications.presentation.screens.first.NotificationSettingsScreen
 import ru.itis.notifications.presentation.ui.theme.NotificationsTheme
 
@@ -23,9 +25,9 @@ class MainActivity : ComponentActivity() {
     ) { isGranted: Boolean ->
         Log.d("MainActivity", "Permission result: $isGranted")
         if (isGranted) {
-            Toast.makeText(this, "Notifications enabled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.toast_notifications_enabled), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Notifications DISABLED - enable in settings!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.toast_notifications_disabled), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -50,7 +52,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NotificationsTheme {
-                NotificationSettingsScreen()
+                NavBar()
             }
         }
     }
