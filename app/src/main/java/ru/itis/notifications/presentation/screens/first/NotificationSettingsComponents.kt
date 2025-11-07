@@ -82,7 +82,8 @@ fun PriorityDropdown(
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .menuAnchor(),
             placeholder = { Text(stringResource(R.string.select_priority)) },
             shape = RoundedCornerShape(10.dp)
         )
