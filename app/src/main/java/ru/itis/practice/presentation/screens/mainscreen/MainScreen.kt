@@ -69,7 +69,7 @@ fun MainScreen(
             ExceptionStatus.COMPLETED -> {
                 Toast.makeText(context,
                     context.getString(
-                        R.string.completed_coroutines_count,
+                        R.string.cancelled_coroutines_count,
                         currentState.completedCoroutinesCount
                     ), Toast.LENGTH_LONG).show()
             }

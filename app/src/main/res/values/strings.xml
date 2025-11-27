@@ -3,7 +3,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="taking_too_long">Taking too long %1$s</string>
     <string name="taking_too_long_2">Taking too long %1$s</string>
-    <string name="completed_coroutines_count">Completed coroutines count: %1$d</string>
+    <string name="cancelled_coroutines_count">Cancelled coroutines count: %1$d</string>
     <string name="sequenced_launch">Sequenced launch</string>
     <string name="parallel_launch">Parallel launch</string>
     <string name="delayed_launch">Delayed launch</string>
