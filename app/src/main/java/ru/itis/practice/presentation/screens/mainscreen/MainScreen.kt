@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import ru.itis.notifications.R
 import ru.itis.practice.domain.ExceptionStatus
 import java.util.Locale.getDefault
 import kotlin.math.roundToInt
@@ -42,19 +43,21 @@ fun MainScreen(
     LaunchedEffect(currentState.exceptionStatus) {
         when(currentState.exceptionStatus) {
             ExceptionStatus.IO -> {
-                Toast.makeText(context, "Taking too long ${
-                    ExceptionStatus.IO.name.lowercase(
+                Toast.makeText(context, context.getString(
+                    R.string.taking_too_long, ExceptionStatus.IO.name.lowercase(
                         getDefault()
                     )
-                }", Toast.LENGTH_SHORT).show()
+                ), Toast.LENGTH_SHORT).show()
                 viewModel.processCommand(MainScreenCommands.ResetStatus)
             }
             ExceptionStatus.ARRAYINDEXOUTOFBOUNDS -> {
-                snackbarHostState.showSnackbar("Taking too long ${
-                    ExceptionStatus.ARRAYINDEXOUTOFBOUNDS.name.lowercase(
-                        getDefault()
-                    )
-                }")
+                snackbarHostState.showSnackbar(
+                    context.getString(
+                        R.string.taking_too_long_2,
+                        ExceptionStatus.ARRAYINDEXOUTOFBOUNDS.name.lowercase(
+                            getDefault()
+                        )
+                    ))
                 viewModel.processCommand(MainScreenCommands.ResetStatus)
 
             }
@@ -64,7 +67,11 @@ fun MainScreen(
             }
             ExceptionStatus.NONE -> {}
             ExceptionStatus.COMPLETED -> {
-                Toast.makeText(context, "Completed coroutines count: ${currentState.completedCoroutinesCount}", Toast.LENGTH_LONG).show()
+                Toast.makeText(context,
+                    context.getString(
+                        R.string.completed_coroutines_count,
+                        currentState.completedCoroutinesCount
+                    ), Toast.LENGTH_LONG).show()
             }
         }
     }

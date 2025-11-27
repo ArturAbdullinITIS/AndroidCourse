@@ -17,7 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.itis.notifications.R
 import ru.itis.practice.domain.Dispatchers
 
 
@@ -54,7 +56,7 @@ fun IsSequencedSwitch(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Sequenced launch",
+            text = stringResource(R.string.sequenced_launch),
             modifier = Modifier.weight(1f)
         )
         Switch(
@@ -74,7 +76,7 @@ fun IsParallelSwitch(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Parallel launch",
+            text = stringResource(R.string.parallel_launch),
             modifier = Modifier.weight(1f)
         )
         Switch(
@@ -94,7 +96,7 @@ fun IsLaunchSwitch(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Delayed launch",
+            text = stringResource(R.string.delayed_launch),
             modifier = Modifier.weight(1f)
         )
         Switch(
@@ -114,7 +116,7 @@ fun IsBackgroundSwitch(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Background",
+            text = stringResource(R.string.background),
             modifier = Modifier.weight(1f)
         )
         Switch(
@@ -149,7 +151,7 @@ fun DispatchersPoolDropDown(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(),
-            placeholder = { Text("Select Dispatchers Pool") },
+            placeholder = { Text(stringResource(R.string.select_dispatchers_pool)) },
             shape = RoundedCornerShape(10.dp)
         )
 
@@ -183,7 +185,7 @@ fun LaunchCoroutinesButton(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     ) {
-        Text(text = "Launch Coroutines")
+        Text(text = stringResource(R.string.launch_coroutines))
     }
 }
 @Composable
@@ -198,6 +200,6 @@ fun StopCoroutinesButton(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     ) {
-        Text(text = "Stop Coroutines")
+        Text(text = stringResource(R.string.stop_coroutines))
     }
 }
