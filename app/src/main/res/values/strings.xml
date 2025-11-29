@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Practice</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="taking_too_long">Taking too long %1$s</string>
+    <string name="taking_too_long_2">Taking too long %1$s</string>
+    <string name="cancelled_coroutines_count">Cancelled coroutines count: %1$d</string>
+    <string name="sequenced_launch">Sequenced launch</string>
+    <string name="parallel_launch">Parallel launch</string>
+    <string name="delayed_launch">Delayed launch</string>
+    <string name="background">Background</string>
+    <string name="select_dispatchers_pool">Select Dispatchers Pool</string>
+    <string name="launch_coroutines">Launch Coroutines</string>
+    <string name="stop_coroutines">Stop Coroutines</string>
+    <string name="coroutine_is_running">Coroutine %1$d is running..</string>
+    <string name="coroutine_is_completed">Coroutine %1$d is completed</string>
+    <string name="coroutine_is_taking_too_long">Coroutine %1$d is taking too long</string>
+    <string name="coroutine_is_taking_too_long_2">Coroutine %1$d is taking too long</string>
+    <string name="coroutine_is_taking_too_long_3">Coroutine %1$d is taking too long</string>
 </resources>
