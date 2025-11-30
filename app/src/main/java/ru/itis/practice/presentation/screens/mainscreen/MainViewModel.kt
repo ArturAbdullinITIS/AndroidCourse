@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
 
     fun stopCoroutines() {
         viewModelScope.launch {
-            coroutinesUseCase.cancellAllCoroutines()
+            coroutinesUseCase.cancelAllCoroutines()
             _state.update { state ->
                 state.copy(
                     isLoading = false,
@@ -148,7 +148,8 @@ class MainViewModel @Inject constructor(
                                 when (exception) {
                                     is IOException -> state.copy(exceptionStatus = ExceptionStatus.IO)
                                     is ArrayIndexOutOfBoundsException -> state.copy(exceptionStatus = ExceptionStatus.ARRAYINDEXOUTOFBOUNDS)
-                                    else -> state.also { resetAllSettings() }
+                                    is ClassNotFoundException -> state.copy(exceptionStatus = ExceptionStatus.CLASSNOTFOUND).also { resetAllSettings() }
+                                    else -> state
                                 }
                             }
                             Log.d("MainScreenState", "${_state.value}")
@@ -169,9 +170,9 @@ class MainViewModel @Inject constructor(
             }
 
             MainScreenCommands.StopCoroutines -> {
-                Log.d("MainScreen", "Coroutines stoped")
+                Log.d("MainScreen", "Coroutines stopped")
                 viewModelScope.launch {
-                    coroutinesUseCase.cancellAllCoroutines()
+                    coroutinesUseCase.cancelAllCoroutines()
                 }
                 _state.update { state ->
                     val completed = coroutinesUseCase.getCompletedCount()
