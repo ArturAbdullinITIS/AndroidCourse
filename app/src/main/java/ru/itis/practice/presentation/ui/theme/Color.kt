@@ -1,4 +1,4 @@
-package ru.itis.practice.ui.theme
+package ru.itis.practice.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

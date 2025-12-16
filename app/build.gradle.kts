@@ -7,13 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "ru.itis.notifications"
-    compileSdk {
-        version = release(36)
-    }
+    namespace = "ru.itis.practice"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "ru.itis.notifications"
+        applicationId = "ru.itis.roomapp"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
