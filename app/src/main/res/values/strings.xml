@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Room</string>
+    <string name="validation_successful">Validation successful</string>
+    <string name="email_cannot_be_blank">Email cannot be blank</string>
+    <string name="password_cannot_be_blank">Password cannot be blank</string>
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="password_is_too_weak">Password is too weak</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="type_your_email">type your email</string>
+    <string name="type_your_password">type your password</string>
+    <string name="register">Register</string>
 </resources>
