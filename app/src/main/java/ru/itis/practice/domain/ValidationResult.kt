@@ -15,5 +15,6 @@ enum class ValidationError {
     BLANK_EMAIL,
     BLANK_PASSWORD,
     INVALID_EMAIL_FORMAT,
-    WEAK_PASSWORD
+    WEAK_PASSWORD,
+    AUTH_ERROR
 }

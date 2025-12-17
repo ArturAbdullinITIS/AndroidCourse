@@ -1,8 +1,6 @@
-package ru.itis.practice.presentation.screen.register
+package ru.itis.practice.presentation.screen.login
 
-import android.R.attr.title
-import android.R.id.title
-import android.graphics.drawable.Icon
+import androidx.annotation.RestrictTo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +12,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Title
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,30 +31,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ru.itis.practice.R
+import ru.itis.practice.presentation.screen.register.RegisterCommand
+import ru.itis.practice.presentation.screen.register.RegisterViewModel
+
+
+
 
 @Composable
-fun RegisterScreen(
-    onNavigateToLogin: () -> Unit
+fun LoginScreen(
+    onNavigateToRegister: () -> Unit,
+    onNavigateToMain: () -> Unit
 ) {
-    RegisterContent(
-        onNavigateToLogin
-    )
+    LoginContent(onNavigateToRegister, onNavigateToMain)
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun RegisterContent(
-    onNavigateToLogin: () -> Unit,
+private fun LoginContent(
+    onNavigateToRegister: () -> Unit,
+    onNavigateToMain: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
-
     LaunchedEffect(state.isSuccess) {
-        if (state.isSuccess) {
-            onNavigateToLogin()
+        if(state.isSuccess) {
+            onNavigateToMain()
         }
     }
 
@@ -66,21 +67,21 @@ private fun RegisterContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Register",
+                        text = "Login",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 },
-                actions = {
+                navigationIcon = {
                     Icon(
                         modifier = Modifier
-                            .padding(end = 16.dp)
-                            .clickable(
-                                onClick = onNavigateToLogin
-                            ),
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = stringResource(R.string.go_to_login_screen),
+                            .padding(start = 16.dp)
+                            .clickable {
+                                onNavigateToRegister()
+                            },
+                        imageVector = Icons.Default.ArrowBackIosNew,
+                        contentDescription = stringResource(R.string.back_to_register_screen)
                     )
                 }
             )
@@ -100,18 +101,18 @@ private fun RegisterContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
 
                 ) {
-                EmailTextField(
+                EmailAuthTextField(
                     value = state.email,
                     onValueChange = {
-                        viewModel.processCommand(RegisterCommand.InputEmail(it))
+                        viewModel.processCommand(LoginCommand.InputEmail(it))
                     },
                     errorMessage = state.emailError,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                PasswordTextField(
+                PasswordAuthTextField(
                     value = state.password,
                     onValueChange = {
-                        viewModel.processCommand(RegisterCommand.InputPassword(it))
+                        viewModel.processCommand(LoginCommand.InputPassword(it))
                     },
                     errorMessage = state.passwordError,
                 )
@@ -123,9 +124,9 @@ private fun RegisterContent(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                RegisterButton(
+                LoginButton(
                     onClick = {
-                        viewModel.processCommand(RegisterCommand.RegisterUser)
+                        viewModel.processCommand(LoginCommand.LoginUser)
                     }
                 )
             }

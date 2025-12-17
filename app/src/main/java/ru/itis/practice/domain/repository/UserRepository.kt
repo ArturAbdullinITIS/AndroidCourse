@@ -9,7 +9,7 @@ interface UserRepository {
 
     suspend fun loginUser(email: String, password: String): Boolean
 
-    fun getActiveUserId(): Int?
+    suspend fun getActiveUserId(): Int?
 
     suspend fun logout()
 

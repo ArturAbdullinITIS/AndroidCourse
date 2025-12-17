@@ -19,6 +19,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
     suspend fun findUserByEmail(email: String): UserDbModel?
 
+    @Query("SELECT id FROM users WHERE is_active = 1 LIMIT 1")
+    suspend fun getActiveUserId(): Int?
+
     @Query("UPDATE users SET is_active = 1 WHERE id = :userId")
     suspend fun setActiveUser(userId: Int)
 }

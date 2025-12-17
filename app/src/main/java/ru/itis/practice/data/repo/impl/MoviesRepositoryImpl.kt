@@ -1,7 +1,12 @@
 package ru.itis.practice.data.repo.impl
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import ru.itis.practice.data.mapper.toEntities
 import ru.itis.practice.data.model.MovieDbModel
 import ru.itis.practice.data.repo.dao.MovieDao
@@ -14,10 +19,18 @@ class MoviesRepositoryImpl @Inject constructor(
     private val movieDao: MovieDao,
     private val userRepository: UserRepository
 ): MoviesRepository {
-    override fun getAllMovies(): Flow<List<Movie>> {
+
+
+    override fun getAllMovies(): Flow<List<Movie>> = flow{
         val userId = userRepository.getActiveUserId()
-        return movieDao.getAllMovies(userId).map { it.toEntities() }
+
+        movieDao.getAllMovies(userId).map { it.toEntities() }
+            .collect {
+                emit(it)
+            }
+
     }
+
     override suspend fun addMovie(
         title: String,
         description: String,

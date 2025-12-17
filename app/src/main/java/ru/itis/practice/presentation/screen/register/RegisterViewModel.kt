@@ -44,6 +44,7 @@ class RegisterViewModel @Inject constructor(
             }
             is RegisterCommand.RegisterUser -> {
                 viewModelScope.launch {
+                    _state.update {it.copy(isSuccess = false)}
                     val currentEmail = _state.value.email
                     val currentPassword = _state.value.password
 
@@ -51,7 +52,11 @@ class RegisterViewModel @Inject constructor(
 
                     when(validationResult) {
                         is ValidationResult.SUCCESS -> {
-                             Log.d("RegisterViewModel", "User registered successfully")
+                            _state.update { state ->
+                                state.copy(
+                                    isSuccess = true
+                                )
+                            }
                         }
                         is ValidationResult.Errors -> {
                             _state.update { state ->
@@ -81,6 +86,8 @@ class RegisterViewModel @Inject constructor(
                 resourceProvider.getString(R.string.invalid_email_format)
             ValidationError.WEAK_PASSWORD ->
                 resourceProvider.getString(R.string.password_is_too_weak)
+            ValidationError.AUTH_ERROR ->
+                resourceProvider.getString(R.string.authentication_error_occurred)
         }
     }
 }
@@ -95,5 +102,6 @@ data class RegisterState(
     val email: String = "",
     val password: String = "",
     val emailError: String = "",
-    val passwordError: String = ""
+    val passwordError: String = "",
+    val isSuccess: Boolean = false
 )

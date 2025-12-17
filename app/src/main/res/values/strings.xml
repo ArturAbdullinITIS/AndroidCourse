@@ -10,4 +10,8 @@
     <string name="type_your_email">type your email</string>
     <string name="type_your_password">type your password</string>
     <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="authentication_error_occurred">Authentication error occurred</string>
+    <string name="back_to_register_screen">Back to register screen</string>
+    <string name="go_to_login_screen">Go to login screen</string>
 </resources>
