@@ -10,7 +10,11 @@ class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao
 ): UserRepository {
 
-    override suspend fun registerUser(email: String, password: String) {
+    override suspend fun registerUser(email: String, password: String): Boolean {
+        val existingUser = userDao.findUserByEmail(email)
+        if (existingUser != null) {
+            return false
+        }
         val hashedPassword = PasswordHasher.hash(password)
         val userDbModel = UserDbModel(
             email = email,
@@ -21,6 +25,7 @@ class UserRepositoryImpl @Inject constructor(
 
         userDao.clearActiveUser()
         userDao.setActiveUser(insertedId.toInt())
+        return true
     }
 
     override suspend fun loginUser(email: String, password: String): Boolean {

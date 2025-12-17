@@ -23,10 +23,15 @@ class RegisterUserUseCase @Inject constructor(
             password.length < 6 -> passwordError = ValidationError.WEAK_PASSWORD
         }
 
+
+
         return if (emailError != null || passwordError != null) {
             ValidationResult.Errors(emailError, passwordError)
         } else {
-            userRepository.registerUser(email, password)
+            val success = userRepository.registerUser(email, password)
+            if (!success) {
+                return ValidationResult.Errors(emailError = ValidationError.EMAIL_ALREADY_EXISTS)
+            }
             ValidationResult.SUCCESS
         }
     }

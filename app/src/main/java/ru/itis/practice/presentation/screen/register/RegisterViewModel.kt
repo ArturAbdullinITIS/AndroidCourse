@@ -49,6 +49,7 @@ class RegisterViewModel @Inject constructor(
                     val currentPassword = _state.value.password
 
                     val validationResult = registerUserUseCase(currentEmail, currentPassword)
+                    
 
                     when(validationResult) {
                         is ValidationResult.SUCCESS -> {
@@ -96,6 +97,9 @@ class RegisterViewModel @Inject constructor(
                 resourceProvider.getString(R.string.password_is_too_weak)
             ValidationError.AUTH_ERROR ->
                 resourceProvider.getString(R.string.authentication_error_occurred)
+            ValidationError.EMAIL_ALREADY_EXISTS -> {
+                resourceProvider.getString(R.string.email_already_exists)
+            }
         }
     }
 }
