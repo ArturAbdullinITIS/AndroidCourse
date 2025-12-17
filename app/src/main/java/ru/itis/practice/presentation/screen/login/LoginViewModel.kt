@@ -66,6 +66,14 @@ class LoginViewModel @Inject constructor(
                     )
                 }
             }
+
+            LoginCommand.TogglePasswordVisibility -> {
+                _state.update { state ->
+                    state.copy(
+                        isPassVis = !state.isPassVis
+                    )
+                }
+            }
         }
     }
 }
@@ -73,7 +81,9 @@ class LoginViewModel @Inject constructor(
 sealed interface LoginCommand {
     data class InputEmail(val email: String): LoginCommand
     data class InputPassword(val password: String): LoginCommand
-    object LoginUser: LoginCommand
+    data object LoginUser: LoginCommand
+    data object TogglePasswordVisibility: LoginCommand
+
 }
 
 
@@ -83,5 +93,6 @@ data class LoginState(
     val password: String = "",
     val emailError: String = "",
     val passwordError: String = "",
-    val isSuccess: Boolean = false
+    val isSuccess: Boolean = false,
+    val isPassVis: Boolean = false
 )

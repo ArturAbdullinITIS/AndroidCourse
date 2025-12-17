@@ -1,15 +1,28 @@
 package ru.itis.practice.presentation.screen.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Login
+import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import ru.itis.practice.R
 
@@ -39,6 +52,12 @@ fun EmailAuthTextField(
         isError = errorMessage.isNotBlank(),
         placeholder = {
             Text(stringResource(R.string.type_your_email))
+        },
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.Mail,
+                contentDescription = "Email"
+            )
         }
     )
 }
@@ -47,7 +66,9 @@ fun EmailAuthTextField(
 fun PasswordAuthTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    errorMessage: String
+    errorMessage: String,
+    isPassVis: Boolean,
+    onIconClick: () -> Unit
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -69,8 +90,19 @@ fun PasswordAuthTextField(
                 )
             }
         },
+        trailingIcon = {
+            Icon(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(
+                        onClick = onIconClick
+                    ),
+                imageVector = Icons.Default.RemoveRedEye,
+                contentDescription = "Password"
+            )
+        },
         isError = errorMessage.isNotBlank(),
-        visualTransformation = PasswordVisualTransformation()
+        visualTransformation = if(!isPassVis) PasswordVisualTransformation() else VisualTransformation.None
     )
 }
 
@@ -79,10 +111,20 @@ fun LoginButton(
     onClick: () -> Unit,
 ) {
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.size(width = 300.dp, height = 40.dp),
         onClick = onClick,
         shape = RoundedCornerShape(16.dp)
     ) {
-        Text(text = stringResource(R.string.login))
+        Text(text = "Log In")
     }
+}
+
+@Composable
+fun CustomLogInIcon() {
+    Icon(
+        modifier = Modifier.size(100.dp),
+        imageVector = Icons.Default.Key,
+        contentDescription = "Log In Icon",
+        tint = MaterialTheme.colorScheme.primary,
+    )
 }

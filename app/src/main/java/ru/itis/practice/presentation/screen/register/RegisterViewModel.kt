@@ -73,6 +73,14 @@ class RegisterViewModel @Inject constructor(
                     }
                 }
             }
+
+            RegisterCommand.TogglePasswordVisibility -> {
+                _state.update { state ->
+                    state.copy(
+                        isPassVis = !state.isPassVis
+                    )
+                }
+            }
         }
     }
 
@@ -96,6 +104,7 @@ sealed interface RegisterCommand {
     data class InputEmail(val email: String): RegisterCommand
     data class InputPassword(val password: String): RegisterCommand
     data object RegisterUser: RegisterCommand
+    data object TogglePasswordVisibility: RegisterCommand
 }
 
 data class RegisterState(
@@ -103,5 +112,6 @@ data class RegisterState(
     val password: String = "",
     val emailError: String = "",
     val passwordError: String = "",
-    val isSuccess: Boolean = false
+    val isSuccess: Boolean = false,
+    val isPassVis: Boolean = false
 )
