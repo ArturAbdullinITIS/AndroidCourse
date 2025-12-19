@@ -3,16 +3,21 @@ package ru.itis.practice.presentation.screen.mainscreen
 import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -126,3 +131,45 @@ fun MovieRating(rating: Double) {
         )
     }
 }
+
+@Composable
+fun SortBottomSheetContent(
+    currentSort: SortOrder,
+    onSortSelected: (SortOrder) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .navigationBarsPadding()
+            .padding(24.dp)
+    ) {
+        Text("Sort Movies", style = MaterialTheme.typography.headlineSmall)
+        Spacer(Modifier.height(24.dp))
+
+        SortOption("A-Z", SortOrder.BY_TITLE, currentSort, onSortSelected)
+        SortOption("Rating ↓", SortOrder.BY_RATING, currentSort, onSortSelected)
+        SortOption("Year ↓", SortOrder.BY_YEAR, currentSort, onSortSelected)
+    }
+}
+
+@Composable
+fun SortOption(
+    text: String,
+    sortOrder: SortOrder,
+    currentSort: SortOrder,
+    onClick: (SortOrder) -> Unit
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable { onClick(sortOrder) }
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text)
+        if (currentSort == sortOrder) {
+            Icon(Icons.Default.Check, null)
+        }
+    }
+}
+

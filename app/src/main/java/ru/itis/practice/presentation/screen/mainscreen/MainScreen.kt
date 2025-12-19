@@ -14,23 +14,32 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 import ru.itis.practice.domain.entity.Movie
 import ru.itis.practice.domain.repository.MoviesRepository
@@ -63,6 +73,12 @@ fun MainScreenContent(
     onNavigateToProfile: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val sortedMovies by viewModel.sortedMovies.collectAsState()
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
@@ -89,53 +105,22 @@ fun MainScreenContent(
                     )
                 },
                 actions = {
-                    Icon(
-                        modifier = Modifier.padding(end = 16.dp)
-                            .size(40.dp)
-                            .clickable {
-                                onNavigateToProfile()
-                            },
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = "Account"
-                    )
+                    IconButton(onClick = { showBottomSheet = true }) {
+                        Icon(Icons.Default.Sort, contentDescription = "Sort")
+                    }
+                    IconButton(onClick = onNavigateToProfile) {
+                        Icon(Icons.Default.AccountCircle, "Profile")
+                    }
                 }
             )
         },
     ) { innerPadding ->
-        if (state.movieToDelete != null) {
-            AlertDialog(
-                onDismissRequest = {
-                    viewModel.processCommand(MainScreenCommand.CancelDelete)
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            viewModel.processCommand(MainScreenCommand.ConfirmDelete)
-                        }
-                    ) {
-                        Text("Delete")
-                    }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
-                            viewModel.processCommand(MainScreenCommand.CancelDelete)
-                        }
-                    ) {
-                        Text("Cancel")
-                    }
-                },
-                title = { Text("Delete Movie") },
-                text = { Text("Are you sure you want to delete \"${state.movieToDelete!!.title}\"?") }
-            )
-        }
-
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
             HorizontalDivider(modifier = Modifier.padding(horizontal = 32.dp))
             LazyColumn {
-                if (state.movies.isEmpty()) {
+                if (sortedMovies.isEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(100.dp))
                         Text(
@@ -150,7 +135,7 @@ fun MainScreenContent(
                     }
                 } else {
                     itemsIndexed(
-                        items = state.movies,
+                        items = sortedMovies,
                         key = { index, movie -> movie.id }
                     ) { index, movie ->
                         MovieCard(
@@ -170,6 +155,40 @@ fun MainScreenContent(
 
         }
 
+    }
+
+    state.movieToDelete?.let { movie ->
+        AlertDialog(
+            onDismissRequest = { viewModel.processCommand(MainScreenCommand.CancelDelete) },
+            title = { Text("Delete Movie") },
+            text = { Text("Delete \"${movie.title}\"?") },
+            confirmButton = {
+                TextButton(
+                    onClick = { viewModel.processCommand(MainScreenCommand.ConfirmDelete) }
+                ) { Text("Delete") }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { viewModel.processCommand(MainScreenCommand.CancelDelete) }
+                ) { Text("Cancel") }
+            }
+        )
+    }
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            sheetState = sheetState
+        ) {
+            SortBottomSheetContent(
+                currentSort = state.sortOrder,
+                onSortSelected = { sortOrder ->
+                    viewModel.processCommand(MainScreenCommand.ChangeSortOrder(sortOrder))
+                    scope.launch { sheetState.hide() }
+                    showBottomSheet = false
+                }
+            )
+        }
     }
 
 }

@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -148,6 +149,24 @@ fun LogoutButton(
     ) {
         Text(
             "Log Out",
+        )
+    }
+}
+@Composable
+fun DeleteButton(
+    onClick: () -> Unit,
+) {
+    Button(
+        modifier = Modifier.size(width = 300.dp, height = 40.dp),
+        onClick = onClick,
+        shape = RoundedCornerShape(40.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+            contentColor = MaterialTheme.colorScheme.onErrorContainer
+        )
+    ) {
+        Text(
+            "Delete Account",
         )
     }
 }

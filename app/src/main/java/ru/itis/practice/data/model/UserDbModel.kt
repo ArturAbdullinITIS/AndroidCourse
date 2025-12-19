@@ -16,5 +16,6 @@ data class UserDbModel (
     @ColumnInfo(name="password_hash")
     val passwordHash: String,
     @ColumnInfo(name="is_active")
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+    val deletedAt: Long? = null
 )

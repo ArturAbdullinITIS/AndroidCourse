@@ -9,6 +9,7 @@ sealed class ValidationResult {
         val emailError: ValidationError? = null,
         val passwordError: ValidationError? = null
     ) : ValidationResult()
+    data class DeletedAccount(val email: String) : ValidationResult()
 }
 
 enum class ValidationError {
@@ -17,5 +18,7 @@ enum class ValidationError {
     INVALID_EMAIL_FORMAT,
     WEAK_PASSWORD,
     AUTH_ERROR,
-    EMAIL_ALREADY_EXISTS
+    EMAIL_ALREADY_EXISTS,
+    USER_NOT_FOUND,
+    WRONG_PASSWORD
 }

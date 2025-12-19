@@ -15,4 +15,6 @@
     <string name="back_to_register_screen">Back to register screen</string>
     <string name="go_to_login_screen">Go to login screen</string>
     <string name="email_already_exists">Email already exists</string>
+    <string name="wrong_password_entered">Wrong password entered.</string>
+    <string name="no_user_with_this_email_was_found">No user with this email was found.</string>
 </resources>

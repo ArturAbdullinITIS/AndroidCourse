@@ -1,12 +1,20 @@
 package ru.itis.practice.presentation.screen.mainscreen
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.itis.practice.domain.entity.Movie
@@ -23,16 +31,19 @@ class MainViewModel @Inject constructor(
     private val _state = MutableStateFlow(MainScreenState())
     val state = _state.asStateFlow()
 
-
-    init {
-        getAllMoviesUseCase().onEach { movies ->
-            _state.update { state->
-                state.copy(
-                    movies = movies
-                )
+    val sortedMovies: StateFlow<List<Movie>> = getAllMoviesUseCase()
+        .combine(state) { movies, currentState ->
+            when(currentState.sortOrder) {
+                SortOrder.BY_TITLE -> movies.sortedBy { it.title }
+                SortOrder.BY_RATING -> movies.sortedBy { it.rating }
+                SortOrder.BY_YEAR -> movies.sortedBy { it.releaseYear }
             }
-        }.launchIn(viewModelScope)
-    }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = emptyList()
+        )
 
     fun processCommand(command: MainScreenCommand) {
         when(command) {
@@ -61,6 +72,14 @@ class MainViewModel @Inject constructor(
                     )
                 }
             }
+
+            is MainScreenCommand.ChangeSortOrder -> {
+                _state.update { state ->
+                    state.copy(
+                        sortOrder = command.sortOrder
+                    )
+                }
+            }
         }
     }
 
@@ -70,11 +89,16 @@ class MainViewModel @Inject constructor(
 sealed interface MainScreenCommand {
     data class OnCardLongClick(val movie: Movie) : MainScreenCommand
     data object ConfirmDelete : MainScreenCommand
-    data object CancelDelete : MainScreenCommand}
-
+    data object CancelDelete : MainScreenCommand
+    data class ChangeSortOrder(val sortOrder: SortOrder) : MainScreenCommand
+}
 
 
 data class MainScreenState(
-    val movies: List<Movie> = listOf(),
-    val movieToDelete: Movie? = null
+    val movieToDelete: Movie? = null,
+    val sortOrder: SortOrder = SortOrder.BY_TITLE,
 )
+
+enum class SortOrder {
+    BY_TITLE, BY_RATING, BY_YEAR
+}

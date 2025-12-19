@@ -12,6 +12,7 @@ import ru.itis.practice.R
 import ru.itis.practice.domain.ValidationError
 import ru.itis.practice.domain.ValidationResult
 import ru.itis.practice.domain.usecase.RegisterUserUseCase
+import ru.itis.practice.util.ErrorParser
 import ru.itis.practice.util.ResourceProvider
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val registerUserUseCase: RegisterUserUseCase,
-    private val resourceProvider: ResourceProvider
+    private val errorParser: ErrorParser
 ): ViewModel() {
     private val _state = MutableStateFlow(RegisterState())
     val state = _state.asStateFlow()
@@ -63,14 +64,16 @@ class RegisterViewModel @Inject constructor(
                             _state.update { state ->
                                 state.copy(
                                     emailError = validationResult.emailError?.let {
-                                        getErrorMessage(it)
+                                        errorParser.getErrorMessage(it)
                                     } ?: "",
                                     passwordError = validationResult.passwordError?.let {
-                                        getErrorMessage(it)
+                                        errorParser.getErrorMessage(it)
                                     } ?: ""
                                 )
                             }
                         }
+
+                        is ValidationResult.DeletedAccount -> {}
                     }
                 }
             }
@@ -85,23 +88,7 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    private fun getErrorMessage(error: ValidationError): String {
-        return when(error) {
-            ValidationError.BLANK_EMAIL ->
-                resourceProvider.getString(R.string.email_cannot_be_blank)
-            ValidationError.BLANK_PASSWORD ->
-                resourceProvider.getString(R.string.password_cannot_be_blank)
-            ValidationError.INVALID_EMAIL_FORMAT ->
-                resourceProvider.getString(R.string.invalid_email_format)
-            ValidationError.WEAK_PASSWORD ->
-                resourceProvider.getString(R.string.password_is_too_weak)
-            ValidationError.AUTH_ERROR ->
-                resourceProvider.getString(R.string.authentication_error_occurred)
-            ValidationError.EMAIL_ALREADY_EXISTS -> {
-                resourceProvider.getString(R.string.email_already_exists)
-            }
-        }
-    }
+
 }
 
 sealed interface RegisterCommand {

@@ -16,6 +16,7 @@ import ru.itis.practice.data.repo.impl.UserRepositoryImpl
 import ru.itis.practice.data.repo.dao.UserDao
 import ru.itis.practice.domain.repository.MoviesRepository
 import ru.itis.practice.domain.repository.UserRepository
+import ru.itis.practice.util.ErrorParser
 import ru.itis.practice.util.ResourceProvider
 import javax.inject.Singleton
 
@@ -55,6 +56,14 @@ interface DataModule {
             @ApplicationContext context: Context
         ): SessionDataStore {
             return SessionDataStore(context)
+        }
+
+        @Provides
+        @Singleton
+        fun provideErrorParser(
+            resourceProvider: ResourceProvider
+        ): ErrorParser {
+            return ErrorParser(resourceProvider)
         }
 
         @Provides

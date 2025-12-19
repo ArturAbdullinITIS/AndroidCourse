@@ -8,11 +8,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.itis.practice.domain.usecase.DeleteUserUseCase
 import ru.itis.practice.domain.usecase.GetUserEmailUseCase
 import ru.itis.practice.domain.usecase.GetUsernameUseCase
 import ru.itis.practice.domain.usecase.LogoutUseCase
 import ru.itis.practice.domain.usecase.SetUserNameUseCase
 import javax.inject.Inject
+import kotlin.math.log
 
 
 @HiltViewModel
@@ -20,7 +22,8 @@ class ProfileViewModel @Inject constructor(
     private val setUserNameUseCase: SetUserNameUseCase,
     private val getUserEmailUseCase: GetUserEmailUseCase,
     private val logoutUseCase: LogoutUseCase,
-    private val getUsernameUseCase: GetUsernameUseCase
+    private val getUsernameUseCase: GetUsernameUseCase,
+    private val deleteAccountUseCase: DeleteUserUseCase
 ): ViewModel() {
     private val _state = MutableStateFlow(ProfileScreenState())
     val state = _state.asStateFlow()
@@ -80,15 +83,26 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
             }
+
+            ProfileCommand.DeleteAccount -> {
+                viewModelScope.launch {
+                    deleteAccountUseCase()
+                    _state.update { state->
+                        state.copy(
+                            loggedOut = true
+                        )
+                    }
+                }
+            }
         }
     }
-
 }
 
 sealed interface ProfileCommand {
     data class InputUsername(val username: String) : ProfileCommand
     data object Logout : ProfileCommand
     data object SetUsername : ProfileCommand
+    data object DeleteAccount : ProfileCommand
 }
 
 data class ProfileScreenState(

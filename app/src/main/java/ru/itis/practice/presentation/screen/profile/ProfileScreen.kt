@@ -50,16 +50,16 @@ import ru.itis.practice.presentation.screen.login.PasswordAuthTextField
 @Composable
 fun ProfileScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToLogIn: () -> Unit
+    onNavigateToLogIn: () -> Unit,
 ) {
-    ProfileContent(onNavigateToLogIn, onNavigateBack)
+    ProfileContent(onNavigateBack,onNavigateToLogIn)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileContent(
-    onNavigateToLogIn: () -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateToLogIn: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -137,6 +137,11 @@ fun ProfileContent(
                         LogoutButton(
                             onClick = { viewModel.processCommand(ProfileCommand.Logout) }
                         )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        DeleteButton(
+                            onClick = { viewModel.processCommand(ProfileCommand.DeleteAccount) }
+                        )
+
                     }
                 }
 

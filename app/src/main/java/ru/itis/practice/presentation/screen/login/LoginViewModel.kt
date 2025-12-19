@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
-    private val resourceProvider: ResourceProvider
+    private val errorParser: ru.itis.practice.util.ErrorParser
 ): ViewModel() {
 
 
@@ -40,10 +41,23 @@ class LoginViewModel @Inject constructor(
                             _state.update { it.copy(isSuccess = true, emailError = "", passwordError = "") }
                         }
                         is ValidationResult.Errors -> {
+                            _state.update { state ->
+                                state.copy(
+                                    emailError = validationResult.emailError?.let {
+                                        errorParser.getErrorMessage(it)
+                                    } ?: "",
+                                    passwordError = validationResult.passwordError?.let {
+                                        errorParser.getErrorMessage(it)
+                                    } ?: ""
+                                )
+                            }
+                        }
+
+                        is ValidationResult.DeletedAccount -> {
                             _state.update { state->
                                 state.copy(
-                                    emailError = resourceProvider.getString(R.string.authentication_error_occurred),
-                                    passwordError = resourceProvider.getString(R.string.authentication_error_occurred)
+                                    deletedAccount = true,
+                                    email = currentEmail
                                 )
                             }
                         }
@@ -94,5 +108,6 @@ data class LoginState(
     val emailError: String = "",
     val passwordError: String = "",
     val isSuccess: Boolean = false,
-    val isPassVis: Boolean = false
+    val isPassVis: Boolean = false,
+    val deletedAccount: Boolean = false
 )

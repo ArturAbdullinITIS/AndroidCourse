@@ -14,6 +14,7 @@ import ru.itis.practice.data.session.SessionDataStore
 import ru.itis.practice.data.session.sessionDataStore
 import ru.itis.practice.presentation.navigation.NavGraph
 import ru.itis.practice.presentation.navigation.Screen
+import ru.itis.practice.presentation.screen.profile.ProfileScreen
 import ru.itis.practice.presentation.ui.theme.RoomAppTheme
 
 

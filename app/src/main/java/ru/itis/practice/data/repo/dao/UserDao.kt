@@ -1,6 +1,5 @@
 package ru.itis.practice.data.repo.dao
 
-import androidx.core.view.WindowInsetsCompat
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -16,7 +15,7 @@ interface UserDao {
     @Query("UPDATE users SET is_active = 0 WHERE is_active = 1")
     suspend fun clearActiveUser()
 
-    @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
+    @Query("SELECT * FROM users WHERE email = :email AND deletedAt IS NULL LIMIT 1")
     suspend fun findUserByEmail(email: String): UserDbModel?
 
 
@@ -35,4 +34,20 @@ interface UserDao {
 
     @Query("SELECT user_name FROM users WHERE id = :userId LIMIT 1")
     suspend fun getUserName(userId: Int): String
+
+    @Query("UPDATE users SET deletedAt = :timestamp WHERE id = :userId")
+    suspend fun softDeleteUser(userId: Int?, timestamp: Long)
+
+    @Query("UPDATE users SET deletedAt = NULL WHERE id = :userId")
+    suspend fun restoreUser(userId: Int)
+
+
+    @Query("DELETE FROM users WHERE deletedAt IS NOT NULL AND deletedAt < :sevenDays")
+    suspend fun deleteOldUsers(sevenDays: Long)
+
+    @Query("DELETE FROM users WHERE id = :userId")
+    suspend fun hardDeleteUser(userId:Int)
+
+    @Query("SELECT * FROM users WHERE email = :email AND deletedAt IS NOT NULL LIMIT 1")
+    suspend fun findDeletedByEmail(email: String): UserDbModel?
 }

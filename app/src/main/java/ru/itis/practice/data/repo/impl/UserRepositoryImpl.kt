@@ -39,6 +39,38 @@ class UserRepositoryImpl @Inject constructor(
         sessionDataStore.setLoggedIn(activeUserId != null)
     }
 
+    override suspend fun softDeleteUser() {
+        val activeUserId = userDao.getActiveUserId()
+        userDao.softDeleteUser(activeUserId, System.currentTimeMillis())
+    }
+
+    override suspend fun restoreUser(userId: Int) {
+        userDao.restoreUser(userId)
+    }
+
+    override suspend fun deleteOldUsers() {
+        val sevenDays = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000)
+        userDao.deleteOldUsers(sevenDays)
+    }
+
+    override suspend fun findUserByEmail(email: String): UserDbModel? {
+        return userDao.findUserByEmail(email)
+    }
+
+    override suspend fun findDeletedByEmail(email: String): UserDbModel? {
+        return userDao.findDeletedByEmail(email)
+    }
+
+    override suspend fun hardDeleteUser(userId: Int) {
+        userDao.hardDeleteUser(userId)
+    }
+
+    override suspend fun setActiveUser(userId: Int) {
+        userDao.setActiveUser(userId)
+    }
+
+
+
 
     override suspend fun loginUser(email: String, password: String): Boolean {
         val user = userDao.findUserByEmail(email) ?: return false

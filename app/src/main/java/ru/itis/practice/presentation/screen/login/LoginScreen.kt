@@ -34,15 +34,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.itis.practice.R
 import ru.itis.practice.presentation.screen.register.CustomClickableText
 
 @Composable
 fun LoginScreen(
     onNavigateToRegister: () -> Unit,
-    onNavigateToMain: () -> Unit
+    onNavigateToMain: () -> Unit,
+    onNavigateToRecovery: (String) -> Unit
 ) {
-    LoginContent(onNavigateToRegister, onNavigateToMain)
+    LoginContent(onNavigateToRegister, onNavigateToMain, onNavigateToRecovery)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,6 +52,7 @@ fun LoginScreen(
 private fun LoginContent(
     onNavigateToRegister: () -> Unit,
     onNavigateToMain: () -> Unit,
+    onNavigateToRecovery: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -58,6 +61,11 @@ private fun LoginContent(
     LaunchedEffect(state.isSuccess) {
         if (state.isSuccess) {
             onNavigateToMain()
+        }
+    }
+    LaunchedEffect(state.deletedAccount) {
+        if (state.deletedAccount) {
+            onNavigateToRecovery(state.email)
         }
     }
 

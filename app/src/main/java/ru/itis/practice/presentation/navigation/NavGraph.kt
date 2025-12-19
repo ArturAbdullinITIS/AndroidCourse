@@ -1,5 +1,6 @@
 package ru.itis.practice.presentation.navigation
 
+import android.R.attr.type
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,9 +12,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import ru.itis.practice.data.session.SessionDataStore
@@ -22,6 +25,7 @@ import ru.itis.practice.presentation.screen.create.CreateScreen
 import ru.itis.practice.presentation.screen.login.LoginScreen
 import ru.itis.practice.presentation.screen.mainscreen.MainScreen
 import ru.itis.practice.presentation.screen.profile.ProfileScreen
+import ru.itis.practice.presentation.screen.recovery.RecoveryScreen
 import ru.itis.practice.presentation.screen.register.RegisterScreen
 
 
@@ -71,6 +75,9 @@ fun NavGraph(
                         }
                         launchSingleTop = true
                     }
+                },
+                onNavigateToRecovery = { email ->
+                    navController.navigate("recovery/$email")
                 }
             )
         }
@@ -110,6 +117,29 @@ fun NavGraph(
                 }
             )
         }
+        composable(
+            "recovery/{email}",
+            arguments = listOf(navArgument("email") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+            RecoveryScreen(
+                email = email,
+                onNavigateToMain = {
+                    navController.navigate(Screen.Main.route) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+
     }
 }
 
@@ -119,4 +149,5 @@ sealed class Screen(val route: String) {
     data object Main: Screen("main")
     data object Create: Screen("create")
     data object Profile: Screen("profile")
+    data object Recovery: Screen("recovery/{email}")
 }
