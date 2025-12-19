@@ -41,7 +41,7 @@ fun TitleTextField(
             }
         },
         label = { Text("Title") },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         singleLine = true,
         supportingText = {
             Row(
@@ -92,7 +92,7 @@ fun DescriptionTextField(
             }
         },
         label = { Text("Description") },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
         minLines = 3,
         maxLines = 5,
         supportingText = {
@@ -141,7 +141,7 @@ fun RatingTextField(
         },
         label = { Text("Rating (0.0 - 10.0)") },
         placeholder = { Text("type movie rating") },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         modifier = modifier.fillMaxWidth(),
         textStyle = MaterialTheme.typography.bodyLarge,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -183,7 +183,7 @@ fun YearInput(
         },
         label = { Text("Release Year") },
         placeholder = { Text("type release year") },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         modifier = modifier.fillMaxWidth(),
         textStyle = MaterialTheme.typography.bodyLarge,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -211,7 +211,7 @@ fun SubmitButton(
     Button(
         modifier = modifier.size(width = 300.dp, height = 40.dp),
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
     ) {
         Text(text = "Submit")
     }

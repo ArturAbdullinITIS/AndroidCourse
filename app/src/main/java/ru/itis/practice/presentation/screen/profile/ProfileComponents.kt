@@ -53,7 +53,7 @@ fun EmailProfileTextField(
         label = {
             Text("Your Email")
         },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         singleLine = true,
         enabled = false,
         leadingIcon = {
@@ -117,22 +117,10 @@ fun UsernameTextField(
         onValueChange = onValueChange,
         label = { Text("Username") },
         placeholder = { Text("Enter your username") },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(40.dp),
         modifier = modifier,
         singleLine = true,
         isError = errorMessage.isNotBlank(),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = when {
-                isSuccess -> MaterialTheme.colorScheme.primary
-                errorMessage.isNotBlank() -> MaterialTheme.colorScheme.error
-                else -> MaterialTheme.colorScheme.primary
-            },
-            unfocusedBorderColor = when {
-                isSuccess -> MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                errorMessage.isNotBlank() -> MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
-                else -> MaterialTheme.colorScheme.outline
-            }
-        ),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Person,
@@ -156,7 +144,7 @@ fun LogoutButton(
     Button(
         modifier = Modifier.size(width = 300.dp, height = 40.dp),
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(40.dp)
     ) {
         Text(
             "Log Out",
@@ -164,37 +152,4 @@ fun LogoutButton(
     }
 }
 
-@Composable
-fun GoBackButton(
-    onClick: () -> Unit,
-) {
-    Button(
-        modifier = Modifier.size(width = 300.dp, height = 40.dp),
-        onClick = onClick,
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.ArrowBackIosNew,
-            contentDescription = "Go Back"
-        )
-    }
-}
-@Composable
-fun SetUserNameButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .size(56.dp)
-            .aspectRatio(1f),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.Edit,
-            contentDescription = "Set Username",
-            modifier = Modifier.size(52.dp)
-        )
-    }
-}
+

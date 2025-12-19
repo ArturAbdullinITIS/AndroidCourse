@@ -39,7 +39,7 @@ fun EmailAuthTextField(
         label = {
             Text(stringResource(R.string.email))
         },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         singleLine = true,
         supportingText = {
             if (errorMessage.isNotBlank()) {
@@ -80,7 +80,7 @@ fun PasswordAuthTextField(
         placeholder = {
             Text(stringResource(R.string.type_your_password))
         },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         singleLine = true,
         supportingText = {
             if (errorMessage.isNotBlank()) {
@@ -111,9 +111,9 @@ fun LoginButton(
     onClick: () -> Unit,
 ) {
     Button(
-        modifier = Modifier.size(width = 300.dp, height = 40.dp),
+        modifier = Modifier.fillMaxWidth(),
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(40.dp)
     ) {
         Text(text = "Log In")
     }
@@ -125,6 +125,6 @@ fun CustomLogInIcon() {
         modifier = Modifier.size(100.dp),
         imageVector = Icons.Default.Key,
         contentDescription = "Log In Icon",
-        tint = MaterialTheme.colorScheme.primary,
+        tint = MaterialTheme.colorScheme.onPrimary,
     )
 }

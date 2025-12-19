@@ -1,12 +1,8 @@
 package ru.itis.practice.data.repo.impl
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import ru.itis.practice.data.mapper.toEntities
 import ru.itis.practice.data.model.MovieDbModel
 import ru.itis.practice.data.repo.dao.MovieDao
@@ -46,5 +42,11 @@ class MoviesRepositoryImpl @Inject constructor(
             rating = rating
         )
         movieDao.addMovie(movieDbModel)
+    }
+
+
+    override suspend fun deleteMovie() {
+        val userId = userRepository.getActiveUserId()
+        movieDao.deleteMovie(userId)
     }
 }

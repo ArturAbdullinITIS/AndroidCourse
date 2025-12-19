@@ -1,6 +1,8 @@
 package ru.itis.practice.presentation.screen.mainscreen
 
 import android.widget.Space
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,33 +33,20 @@ import ru.itis.practice.domain.entity.Movie
 import kotlin.toString
 
 
-@Preview(showBackground = true)
-@Composable
-fun MovieCardPreview() {
-    MovieCard(
-        movie = Movie(
-            id = 1,
-            userId = 1,
-            title = "Inception",
-            description = "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
-            releaseYear = 2010,
-            rating = 1.1
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    )
-}
-
 
 
 @Composable
 fun MovieCard(
     movie: Movie,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDoubleClick: () -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier
+            .combinedClickable(
+                onDoubleClick = onDoubleClick,
+                onClick = {}
+            ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -92,7 +81,7 @@ fun MovieCard(
                 Text(
                     text = movie.releaseYear.toString(),
                     style = MaterialTheme.typography.labelMedium.copy(
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 )
             }

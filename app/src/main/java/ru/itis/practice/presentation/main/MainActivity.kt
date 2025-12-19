@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import ru.itis.practice.presentation.navigation.NavGraph
+import ru.itis.practice.presentation.screen.profile.ProfileScreen
 import ru.itis.practice.presentation.screen.register.RegisterScreen
 import ru.itis.practice.presentation.ui.theme.RoomAppTheme
 

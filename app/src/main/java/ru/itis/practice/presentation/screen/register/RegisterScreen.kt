@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -40,7 +41,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.itis.practice.R
+import ru.itis.practice.presentation.ui.theme.Blue50
 
 @Composable
 fun RegisterScreen(
@@ -66,19 +69,30 @@ private fun RegisterContent(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.inversePrimary
+        containerColor = MaterialTheme.colorScheme.primary
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.Center,
+                .padding(),
+            verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            CustomSignUpIcon()
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Enter your credentials to sign up!",
+                fontSize = 18.sp
+            )
+
+            Spacer(modifier = Modifier.height(80.dp))
+
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .offset(y = 40.dp),
+                shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
@@ -88,17 +102,15 @@ private fun RegisterContent(
                 ),
             ) {
                 Column(
-                    modifier = Modifier.padding(20.dp),
+                    modifier = Modifier.padding(20.dp)
+                        .padding(horizontal = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Spacer(modifier = Modifier.height(32.dp))
-                    CustomSignUpIcon()
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = "Sign Up",
                         fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -131,7 +143,7 @@ private fun RegisterContent(
 
                     HorizontalDivider()
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(30.dp))
 
                     RegisterButton(
                         onClick = {
@@ -139,17 +151,14 @@ private fun RegisterContent(
                         }
                     )
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
+                    Spacer(modifier = Modifier.height(200.dp))
                     CustomClickableText(
                         text = "Already have an account? Log In",
                         onClick = onNavigateToLogin
                     )
-                    Spacer(modifier = Modifier.height(50.dp))
-
                 }
+                Spacer(modifier = Modifier.height(20.dp))
             }
-            Spacer(modifier = Modifier.height(150.dp))
         }
     }
 }

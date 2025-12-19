@@ -14,4 +14,6 @@ interface MoviesRepository {
         rating: Double
     )
 
+    suspend fun deleteMovie()
+
 }

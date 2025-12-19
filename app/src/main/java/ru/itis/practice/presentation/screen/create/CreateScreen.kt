@@ -49,7 +49,7 @@ fun CreateContent(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.inversePrimary
+        containerColor = MaterialTheme.colorScheme.primary
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -60,7 +60,7 @@ fun CreateContent(
         ) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(40.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
@@ -124,6 +124,8 @@ fun CreateContent(
                     SubmitButton(
                         onClick = { viewModel.processCommand(Submit) },
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
+
                 }
             }
 

@@ -1,6 +1,7 @@
 package ru.itis.practice.presentation.screen.register
 
 import android.R.attr.contentDescription
+import android.R.attr.singleLine
 import android.widget.Button
 import androidx.compose.animation.EnterTransition.Companion.None
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -46,7 +48,7 @@ fun EmailTextField(
         label = {
             Text(stringResource(R.string.email))
         },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         singleLine = true,
         supportingText = {
             if (errorMessage.isNotBlank()) {
@@ -87,7 +89,7 @@ fun PasswordTextField(
         placeholder = {
             Text(stringResource(R.string.type_your_password))
         },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         singleLine = true,
         supportingText = {
             if (errorMessage.isNotBlank()) {
@@ -128,7 +130,7 @@ fun CustomClickableText(
             .clickable(onClick = onClick),
         textAlign = TextAlign.Center,
         text = text,
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.secondary,
         style = MaterialTheme.typography.bodyMedium,
         textDecoration = TextDecoration.Underline
     )
@@ -139,9 +141,12 @@ fun RegisterButton(
     onClick: () -> Unit,
 ) {
     Button(
-        modifier = Modifier.size(width = 300.dp, height = 40.dp),
+        modifier = Modifier.fillMaxWidth(),
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp)
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        ),
+        shape = RoundedCornerShape(40.dp)
     ) {
         Text(
             "Sign Up",
@@ -155,6 +160,6 @@ fun CustomSignUpIcon() {
         modifier = Modifier.size(100.dp),
         imageVector = Icons.Default.PersonAdd,
         contentDescription = "Sign Up Icon",
-        tint = MaterialTheme.colorScheme.primary,
+        tint = MaterialTheme.colorScheme.onPrimary,
     )
 }

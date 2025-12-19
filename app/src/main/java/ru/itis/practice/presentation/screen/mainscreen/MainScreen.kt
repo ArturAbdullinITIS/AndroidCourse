@@ -125,7 +125,10 @@ fun MainScreenContent(
                             movie = movie,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(16.dp)
+                                .padding(16.dp),
+                            onDoubleClick = {
+                                viewModel.processCommand(MainScreenCommand.DeleteCard)
+                            }
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                     }
