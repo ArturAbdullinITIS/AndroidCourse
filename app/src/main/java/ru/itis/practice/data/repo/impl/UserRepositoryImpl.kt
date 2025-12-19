@@ -47,4 +47,19 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun logout() {
         userDao.clearActiveUser()
     }
+
+    override suspend fun setUserName(userName: String) {
+        val userId = getActiveUserId() ?: return
+        userDao.setUserName(userId, userName)
+    }
+
+    override suspend fun getUserEmail(): String {
+        val userId = getActiveUserId() ?: return ""
+        return userDao.getUserEmail(userId)
+    }
+
+    override suspend fun getUsername(): String {
+        val userId = getActiveUserId() ?: return ""
+        return userDao.getUserName(userId)
+    }
 }

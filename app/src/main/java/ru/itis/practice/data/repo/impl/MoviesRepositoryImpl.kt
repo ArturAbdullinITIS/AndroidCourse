@@ -34,15 +34,16 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun addMovie(
         title: String,
         description: String,
-        director: String,
-        year: Int
+        year: Int,
+        rating: Double
     ) {
         val userId = userRepository.getActiveUserId()
         val movieDbModel = MovieDbModel(
             userId = userId,
             title = title,
             description = description,
-            releaseYear = year
+            releaseYear = year,
+            rating = rating
         )
         movieDao.addMovie(movieDbModel)
     }

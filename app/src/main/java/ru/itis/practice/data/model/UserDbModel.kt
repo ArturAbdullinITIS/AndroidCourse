@@ -9,6 +9,8 @@ data class UserDbModel (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="id")
     val id: Int = 0,
+    @ColumnInfo(name="user_name")
+    val userName: String = "",
     @ColumnInfo(name="email")
     val email: String,
     @ColumnInfo(name="password_hash")

@@ -6,8 +6,10 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ru.itis.practice.presentation.screen.create.CreateScreen
 import ru.itis.practice.presentation.screen.login.LoginScreen
 import ru.itis.practice.presentation.screen.mainscreen.MainScreen
+import ru.itis.practice.presentation.screen.profile.ProfileScreen
 import ru.itis.practice.presentation.screen.register.RegisterScreen
 
 
@@ -54,7 +56,31 @@ fun NavGraph() {
         }
 
         composable(Screen.Main.route) {
-            MainScreen()
+            MainScreen(
+                onNavigateToCreate = {
+                    navController.navigate(Screen.Create.route)
+                },
+                onNavigateToProfile = {
+                    navController.navigate(Screen.Profile.route)
+                }
+            )
+        }
+        composable(Screen.Create.route) {
+            CreateScreen(
+                onNavigateToMain = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToLogIn = {
+                    navController.navigate(Screen.Login.route)
+                }
+            )
         }
     }
 }
@@ -63,4 +89,6 @@ sealed class Screen(val route: String) {
     data object Register: Screen("register")
     data object Login: Screen("login")
     data object Main: Screen("main")
+    data object Create: Screen("create")
+    data object Profile: Screen("profile")
 }

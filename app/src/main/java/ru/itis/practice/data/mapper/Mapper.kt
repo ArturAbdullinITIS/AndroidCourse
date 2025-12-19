@@ -6,7 +6,7 @@ import ru.itis.practice.domain.entity.Movie
 
 
 fun MovieDbModel.toEntity(): Movie {
-    return Movie(id, userId, title, description, releaseYear)
+    return Movie(id, userId, title, description, releaseYear, rating)
 }
 
 

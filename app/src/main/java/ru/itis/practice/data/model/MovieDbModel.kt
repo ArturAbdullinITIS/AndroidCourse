@@ -29,5 +29,7 @@ data class MovieDbModel (
     @ColumnInfo(name="description")
     val description: String,
     @ColumnInfo(name="release_year")
-    val releaseYear: Int
+    val releaseYear: Int,
+    @ColumnInfo(name="rating")
+    val rating: Double
 )

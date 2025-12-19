@@ -13,5 +13,10 @@ interface UserRepository {
 
     suspend fun logout()
 
+    suspend fun setUserName(userName: String)
+
+    suspend fun getUserEmail(): String
+
+    suspend fun getUsername(): String
 
 }

@@ -5,5 +5,6 @@ data class Movie (
     val userId: Int?,
     val title: String,
     val description: String,
-    val releaseYear: Int
+    val releaseYear: Int,
+    val rating: Double
 )

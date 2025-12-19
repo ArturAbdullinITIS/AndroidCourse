@@ -1,6 +1,7 @@
 package ru.itis.practice.presentation.screen.mainscreen
 
 import android.text.TextUtils.isEmpty
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,11 +39,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import org.w3c.dom.Text
 import ru.itis.practice.domain.entity.Movie
 import ru.itis.practice.domain.repository.MoviesRepository
+import ru.itis.practice.presentation.screen.create.CreateViewModel
 
 
 @Composable
-fun MainScreen() {
-    MainScreenContent(onAddMovieClick = {})
+fun MainScreen(
+    onNavigateToCreate: () -> Unit,
+    onNavigateToProfile: () -> Unit
+) {
+
+    MainScreenContent(onNavigateToCreate = onNavigateToCreate, onNavigateToProfile = onNavigateToProfile)
 }
 
 
@@ -48,14 +56,15 @@ fun MainScreen() {
 @Composable
 fun MainScreenContent(
     viewModel: MainViewModel = hiltViewModel(),
-    onAddMovieClick: () -> Unit
+    onNavigateToCreate: () -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = onNavigateToCreate,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape
@@ -79,17 +88,21 @@ fun MainScreenContent(
                 actions = {
                     Icon(
                         modifier = Modifier.padding(end = 16.dp)
-                            .size(40.dp),
+                            .size(40.dp)
+                            .clickable {
+                                onNavigateToProfile()
+                            },
                         imageVector = Icons.Default.AccountCircle,
                         contentDescription = "Account"
                     )
                 }
             )
-        }
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 32.dp))
             LazyColumn {
                 if (state.movies.isEmpty()) {
                     item {
@@ -115,7 +128,6 @@ fun MainScreenContent(
                                 .padding(16.dp)
                         )
                         Spacer(modifier = Modifier.height(4.dp))
-                        HorizontalDivider(modifier = Modifier.padding(horizontal = 32.dp))
                     }
                 }
 

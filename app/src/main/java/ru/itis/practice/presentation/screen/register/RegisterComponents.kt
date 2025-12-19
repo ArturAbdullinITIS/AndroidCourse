@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -152,7 +153,7 @@ fun RegisterButton(
 fun CustomSignUpIcon() {
     Icon(
         modifier = Modifier.size(100.dp),
-        imageVector = Icons.Default.AccountCircle,
+        imageVector = Icons.Default.PersonAdd,
         contentDescription = "Sign Up Icon",
         tint = MaterialTheme.colorScheme.primary,
     )

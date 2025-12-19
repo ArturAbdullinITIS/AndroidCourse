@@ -10,8 +10,8 @@ interface MoviesRepository {
     suspend fun addMovie(
         title: String,
         description: String,
-        director: String,
-        year: Int
+        year: Int,
+        rating: Double
     )
 
 }

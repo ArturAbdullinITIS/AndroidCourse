@@ -1,0 +1,200 @@
+package ru.itis.practice.presentation.screen.profile
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import ru.itis.practice.R
+
+
+@Composable
+fun CustomProfileIcon() {
+    Icon(
+        modifier = Modifier.size(100.dp),
+        imageVector = Icons.Default.AccountCircle,
+        contentDescription = "Sign Up Icon",
+        tint = MaterialTheme.colorScheme.primary,
+    )
+}
+
+@Composable
+fun EmailProfileTextField(
+    value: String
+) {
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = value,
+        onValueChange = {},
+        label = {
+            Text("Your Email")
+        },
+        shape = RoundedCornerShape(16.dp),
+        singleLine = true,
+        enabled = false,
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = "Username",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    )
+}
+
+@Composable
+fun UsernameEditRow(
+    username: String,
+    onUsernameChange: (String) -> Unit,
+    onSaveUsername: () -> Unit,
+    errorMessage: String,
+    isSuccess: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        UsernameTextField(
+            value = username,
+            onValueChange = onUsernameChange,
+            errorMessage = errorMessage,
+            isSuccess = isSuccess,
+            modifier = Modifier.weight(1f)
+        )
+        IconButton(
+            onClick = onSaveUsername,
+            modifier = Modifier.size(56.dp),
+            colors = IconButtonDefaults.iconButtonColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        ) {
+            Icon(
+                imageVector = Icons.Default.Check,
+                contentDescription = "Save Username",
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun UsernameTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    errorMessage: String = "",
+    isSuccess: Boolean = false,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text("Username") },
+        placeholder = { Text("Enter your username") },
+        shape = RoundedCornerShape(20.dp),
+        modifier = modifier,
+        singleLine = true,
+        isError = errorMessage.isNotBlank(),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = when {
+                isSuccess -> MaterialTheme.colorScheme.primary
+                errorMessage.isNotBlank() -> MaterialTheme.colorScheme.error
+                else -> MaterialTheme.colorScheme.primary
+            },
+            unfocusedBorderColor = when {
+                isSuccess -> MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                errorMessage.isNotBlank() -> MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+                else -> MaterialTheme.colorScheme.outline
+            }
+        ),
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = "Username",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        },
+        supportingText = {
+            if (errorMessage.isNotBlank()) {
+                Text(errorMessage, color = MaterialTheme.colorScheme.error)
+            }
+        }
+    )
+}
+
+
+@Composable
+fun LogoutButton(
+    onClick: () -> Unit,
+) {
+    Button(
+        modifier = Modifier.size(width = 300.dp, height = 40.dp),
+        onClick = onClick,
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Text(
+            "Log Out",
+        )
+    }
+}
+
+@Composable
+fun GoBackButton(
+    onClick: () -> Unit,
+) {
+    Button(
+        modifier = Modifier.size(width = 300.dp, height = 40.dp),
+        onClick = onClick,
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.ArrowBackIosNew,
+            contentDescription = "Go Back"
+        )
+    }
+}
+@Composable
+fun SetUserNameButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .size(56.dp)
+            .aspectRatio(1f),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Edit,
+            contentDescription = "Set Username",
+            modifier = Modifier.size(52.dp)
+        )
+    }
+}

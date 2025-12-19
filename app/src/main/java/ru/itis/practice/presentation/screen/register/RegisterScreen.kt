@@ -66,7 +66,7 @@ private fun RegisterContent(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.inversePrimary
     ) { innerPadding ->
         Column(
             modifier = Modifier
