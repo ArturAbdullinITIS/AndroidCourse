@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +27,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -35,11 +37,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import ru.itis.practice.R
 import ru.itis.practice.presentation.screen.login.CustomLogInIcon
 import ru.itis.practice.presentation.screen.login.EmailAuthTextField
 import ru.itis.practice.presentation.screen.login.LoginButton
@@ -68,7 +72,8 @@ fun ProfileContent(
 
     LaunchedEffect(state.success) {
         if (state.success) {
-            Toast.makeText(context, "Username updated successfully", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,
+                context.getString(R.string.username_updated_successfully), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -105,7 +110,7 @@ fun ProfileContent(
                     ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Profile",
+                            text = stringResource(R.string.profile),
                             fontSize = 24.sp,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Bold,
@@ -139,7 +144,7 @@ fun ProfileContent(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         DeleteButton(
-                            onClick = { viewModel.processCommand(ProfileCommand.DeleteAccount) }
+                            onClick = { viewModel.processCommand(ProfileCommand.ShowDeleteDialog) }
                         )
 
                     }
@@ -157,7 +162,7 @@ fun ProfileContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowBackIosNew,
-                        contentDescription = "Back",
+                        contentDescription = stringResource(R.string.back),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -165,5 +170,23 @@ fun ProfileContent(
 
             Spacer(modifier = Modifier.height(80.dp))
         }
+    }
+
+    if (state.showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { viewModel.processCommand(ProfileCommand.CancelDelete) },
+            title = { Text(stringResource(R.string.delete_account)) },
+            text = { Text(stringResource(R.string.are_you_sure_you_want_to_delete_your_account_you_will_have_7_days_to_restore_it)) },
+            confirmButton = {
+                TextButton(
+                    onClick = { viewModel.processCommand(ProfileCommand.DeleteAccount) }
+                ) { Text(stringResource(R.string.delete)) }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { viewModel.processCommand(ProfileCommand.CancelDelete) }
+                ) { Text(stringResource(R.string.cancel)) }
+            }
+        )
     }
 }

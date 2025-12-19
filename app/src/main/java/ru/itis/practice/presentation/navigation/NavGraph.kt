@@ -1,33 +1,17 @@
 package ru.itis.practice.presentation.navigation
 
-import android.R.attr.type
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import ru.itis.practice.data.session.SessionDataStore
-import ru.itis.practice.data.session.sessionDataStore
 import ru.itis.practice.presentation.screen.create.CreateScreen
 import ru.itis.practice.presentation.screen.login.LoginScreen
 import ru.itis.practice.presentation.screen.mainscreen.MainScreen
 import ru.itis.practice.presentation.screen.profile.ProfileScreen
 import ru.itis.practice.presentation.screen.recovery.RecoveryScreen
 import ru.itis.practice.presentation.screen.register.RegisterScreen
-
 
 @Composable
 fun NavGraph(
@@ -77,7 +61,7 @@ fun NavGraph(
                     }
                 },
                 onNavigateToRecovery = { email ->
-                    navController.navigate("recovery/$email")
+                    navController.navigate("${NavRoutes.RECOVERY}/$email")
                 }
             )
         }
@@ -92,6 +76,7 @@ fun NavGraph(
                 }
             )
         }
+
         composable(Screen.Create.route) {
             CreateScreen(
                 onNavigateToMain = {
@@ -102,6 +87,7 @@ fun NavGraph(
                 },
             )
         }
+
         composable(Screen.Profile.route) {
             ProfileScreen(
                 onNavigateBack = {
@@ -117,11 +103,14 @@ fun NavGraph(
                 }
             )
         }
+
         composable(
-            "recovery/{email}",
-            arguments = listOf(navArgument("email") { type = NavType.StringType })
+            route = "${NavRoutes.RECOVERY}/{${NavRoutes.RECOVERY_EMAIL_ARG}}",
+            arguments = listOf(navArgument(NavRoutes.RECOVERY_EMAIL_ARG) {
+                type = NavType.StringType
+            })
         ) { backStackEntry ->
-            val email = backStackEntry.arguments?.getString("email") ?: ""
+            val email = backStackEntry.arguments?.getString(NavRoutes.RECOVERY_EMAIL_ARG) ?: ""
             RecoveryScreen(
                 email = email,
                 onNavigateToMain = {
@@ -138,16 +127,5 @@ fun NavGraph(
                 }
             )
         }
-
-
     }
-}
-
-sealed class Screen(val route: String) {
-    data object Register: Screen("register")
-    data object Login: Screen("login")
-    data object Main: Screen("main")
-    data object Create: Screen("create")
-    data object Profile: Screen("profile")
-    data object Recovery: Screen("recovery/{email}")
 }

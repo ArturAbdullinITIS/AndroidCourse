@@ -28,7 +28,8 @@ class RecoveryViewModel @Inject constructor(
                     userRepository.setSessionActive(false)
                     _state.update { state ->
                         state.copy(
-                            deleted = true
+                            deleted = true,
+                            showDeleteDialog = false
                         )
                     }
                 }
@@ -47,6 +48,18 @@ class RecoveryViewModel @Inject constructor(
                     }
                 }
             }
+
+            RecoveryCommand.ShowDeleteDialog -> {
+                _state.update { state ->
+                    state.copy(showDeleteDialog = true)
+                }
+            }
+
+            RecoveryCommand.CancelDelete -> {
+                _state.update { state ->
+                    state.copy(showDeleteDialog = false)
+                }
+            }
         }
     }
 }
@@ -54,10 +67,13 @@ class RecoveryViewModel @Inject constructor(
 
 sealed interface RecoveryCommand {
     data class DeletePermanently(val email: String): RecoveryCommand
-    data class  Recover(val email: String): RecoveryCommand
+    data class Recover(val email: String): RecoveryCommand
+    data object ShowDeleteDialog : RecoveryCommand
+    data object CancelDelete : RecoveryCommand
 }
 
 data class RecoveryScreenState(
     val recovered: Boolean = false,
     val deleted: Boolean = false,
+    val showDeleteDialog: Boolean = false
 )

@@ -89,9 +89,22 @@ class ProfileViewModel @Inject constructor(
                     deleteAccountUseCase()
                     _state.update { state->
                         state.copy(
-                            loggedOut = true
+                            loggedOut = true,
+                            showDeleteDialog = false
                         )
                     }
+                }
+            }
+
+            ProfileCommand.ShowDeleteDialog -> {
+                _state.update { state ->
+                    state.copy(showDeleteDialog = true)
+                }
+            }
+
+            ProfileCommand.CancelDelete -> {
+                _state.update { state ->
+                    state.copy(showDeleteDialog = false)
                 }
             }
         }
@@ -103,6 +116,8 @@ sealed interface ProfileCommand {
     data object Logout : ProfileCommand
     data object SetUsername : ProfileCommand
     data object DeleteAccount : ProfileCommand
+    data object ShowDeleteDialog : ProfileCommand
+    data object CancelDelete : ProfileCommand
 }
 
 data class ProfileScreenState(
@@ -111,4 +126,5 @@ data class ProfileScreenState(
     val errorMessage: String = "",
     val success: Boolean = false,
     val loggedOut: Boolean = false,
+    val showDeleteDialog: Boolean = false
 )

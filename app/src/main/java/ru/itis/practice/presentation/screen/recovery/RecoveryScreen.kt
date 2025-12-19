@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.PersonOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -110,7 +112,7 @@ fun RecoveryContent(
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    viewModel.processCommand(RecoveryCommand.DeletePermanently(email))
+                    viewModel.processCommand(RecoveryCommand.ShowDeleteDialog)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
@@ -118,5 +120,23 @@ fun RecoveryContent(
                 Text("Delete Permanently")
             }
         }
+    }
+
+    if (state.showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { viewModel.processCommand(RecoveryCommand.CancelDelete) },
+            title = { Text("Delete Account Permanently") },
+            text = { Text("This action cannot be undone. Are you sure you want to permanently delete your account?") },
+            confirmButton = {
+                TextButton(
+                    onClick = { viewModel.processCommand(RecoveryCommand.DeletePermanently(email)) }
+                ) { Text("Delete") }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { viewModel.processCommand(RecoveryCommand.CancelDelete) }
+                ) { Text("Cancel") }
+            }
+        )
     }
 }
