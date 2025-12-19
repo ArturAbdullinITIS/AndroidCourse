@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -22,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
@@ -99,6 +102,34 @@ fun MainScreenContent(
             )
         },
     ) { innerPadding ->
+        if (state.movieToDelete != null) {
+            AlertDialog(
+                onDismissRequest = {
+                    viewModel.processCommand(MainScreenCommand.CancelDelete)
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            viewModel.processCommand(MainScreenCommand.ConfirmDelete)
+                        }
+                    ) {
+                        Text("Delete")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            viewModel.processCommand(MainScreenCommand.CancelDelete)
+                        }
+                    ) {
+                        Text("Cancel")
+                    }
+                },
+                title = { Text("Delete Movie") },
+                text = { Text("Are you sure you want to delete \"${state.movieToDelete!!.title}\"?") }
+            )
+        }
+
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
@@ -118,16 +149,17 @@ fun MainScreenContent(
                         )
                     }
                 } else {
-                    items(
-                        items = state.movies
-                    ) { movie ->
+                    itemsIndexed(
+                        items = state.movies,
+                        key = { index, movie -> movie.id }
+                    ) { index, movie ->
                         MovieCard(
                             movie = movie,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(16.dp),
-                            onDoubleClick = {
-                                viewModel.processCommand(MainScreenCommand.DeleteCard)
+                            onLongClick = {
+                                viewModel.processCommand(MainScreenCommand.OnCardLongClick(movie))
                             }
                         )
                         Spacer(modifier = Modifier.height(4.dp))

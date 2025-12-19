@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.itis.practice.data.session.SessionDataStore
 import ru.itis.practice.data.repo.dao.MovieDao
 import ru.itis.practice.data.repo.impl.MoviesRepositoryImpl
 import ru.itis.practice.data.repo.RoomDatabase
@@ -46,6 +47,14 @@ interface DataModule {
                 klass = RoomDatabase::class.java,
                 name = "movies.db"
             ).fallbackToDestructiveMigration(dropAllTables = true).build()
+        }
+
+        @Provides
+        @Singleton
+        fun provideDataStore(
+            @ApplicationContext context: Context
+        ): SessionDataStore {
+            return SessionDataStore(context)
         }
 
         @Provides

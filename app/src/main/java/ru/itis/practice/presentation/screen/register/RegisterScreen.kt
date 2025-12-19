@@ -47,15 +47,17 @@ import ru.itis.practice.presentation.ui.theme.Blue50
 
 @Composable
 fun RegisterScreen(
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToMain: () -> Unit
 ) {
-    RegisterContent(onNavigateToLogin)
+    RegisterContent(onNavigateToLogin, onNavigateToMain)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RegisterContent(
     onNavigateToLogin: () -> Unit,
+    onNavigateToMain: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel = hiltViewModel(),
 ) {
@@ -63,7 +65,7 @@ private fun RegisterContent(
 
     LaunchedEffect(state.isSuccess) {
         if (state.isSuccess) {
-            onNavigateToLogin()
+            onNavigateToMain()
         }
     }
 

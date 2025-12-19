@@ -36,9 +36,29 @@ class MainViewModel @Inject constructor(
 
     fun processCommand(command: MainScreenCommand) {
         when(command) {
-            MainScreenCommand.DeleteCard -> {
+            MainScreenCommand.CancelDelete -> {
+                _state.update { state ->
+                    state.copy(
+                        movieToDelete = null
+                    )
+                }
+            }
+            is MainScreenCommand.ConfirmDelete -> {
                 viewModelScope.launch {
-                    deleteMovieUseCase()
+                    val movieId = _state.value.movieToDelete?.id
+                    deleteMovieUseCase(movieId)
+                    _state.update { state->
+                        state.copy(
+                            movieToDelete = null
+                        )
+                    }
+                }
+            }
+            is MainScreenCommand.OnCardLongClick -> {
+                _state.update { state->
+                    state.copy(
+                        movieToDelete = command.movie
+                    )
                 }
             }
         }
@@ -48,11 +68,13 @@ class MainViewModel @Inject constructor(
 
 
 sealed interface MainScreenCommand {
-    data object DeleteCard: MainScreenCommand
-}
+    data class OnCardLongClick(val movie: Movie) : MainScreenCommand
+    data object ConfirmDelete : MainScreenCommand
+    data object CancelDelete : MainScreenCommand}
 
 
 
 data class MainScreenState(
-    val movies: List<Movie> = listOf()
+    val movies: List<Movie> = listOf(),
+    val movieToDelete: Movie? = null
 )

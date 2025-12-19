@@ -45,8 +45,9 @@ class MoviesRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun deleteMovie() {
+
+    override suspend fun deleteMovie(movieId: Int?) {
         val userId = userRepository.getActiveUserId()
-        movieDao.deleteMovie(userId)
+        movieDao.deleteMovie(userId, movieId)
     }
 }

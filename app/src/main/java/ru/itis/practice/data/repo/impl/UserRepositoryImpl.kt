@@ -2,12 +2,14 @@ package ru.itis.practice.data.repo.impl
 
 import ru.itis.practice.data.model.UserDbModel
 import ru.itis.practice.data.repo.dao.UserDao
+import ru.itis.practice.data.session.SessionDataStore
 import ru.itis.practice.domain.repository.UserRepository
 import ru.itis.practice.util.PasswordHasher
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val userDao: UserDao
+    private val userDao: UserDao,
+    private val sessionDataStore: SessionDataStore
 ): UserRepository {
 
     override suspend fun registerUser(email: String, password: String): Boolean {
@@ -25,8 +27,18 @@ class UserRepositoryImpl @Inject constructor(
 
         userDao.clearActiveUser()
         userDao.setActiveUser(insertedId.toInt())
+        setSessionActive(true)
         return true
     }
+    override suspend fun setSessionActive(isActive: Boolean) {
+        sessionDataStore.setLoggedIn(isActive)
+    }
+
+    override suspend fun syncSessionWithDatabase() {
+        val activeUserId = getActiveUserId()
+        sessionDataStore.setLoggedIn(activeUserId != null)
+    }
+
 
     override suspend fun loginUser(email: String, password: String): Boolean {
         val user = userDao.findUserByEmail(email) ?: return false
@@ -37,6 +49,7 @@ class UserRepositoryImpl @Inject constructor(
 
         userDao.clearActiveUser()
         userDao.setActiveUser(user.id)
+        setSessionActive(true)
         return true
     }
 
@@ -46,6 +59,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun logout() {
         userDao.clearActiveUser()
+        sessionDataStore.setLoggedIn(false)
     }
 
     override suspend fun setUserName(userName: String) {

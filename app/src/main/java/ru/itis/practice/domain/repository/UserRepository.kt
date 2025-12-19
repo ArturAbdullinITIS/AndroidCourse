@@ -18,5 +18,7 @@ interface UserRepository {
     suspend fun getUserEmail(): String
 
     suspend fun getUsername(): String
+    suspend fun setSessionActive(isActive: Boolean)
+    suspend fun syncSessionWithDatabase()
 
 }

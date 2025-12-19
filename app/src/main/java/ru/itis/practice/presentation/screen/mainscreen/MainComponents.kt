@@ -39,12 +39,12 @@ import kotlin.toString
 fun MovieCard(
     movie: Movie,
     modifier: Modifier = Modifier,
-    onDoubleClick: () -> Unit
+    onLongClick: () -> Unit
 ) {
     Card(
         modifier = modifier
             .combinedClickable(
-                onDoubleClick = onDoubleClick,
+                onLongClick = onLongClick,
                 onClick = {}
             ),
         shape = RoundedCornerShape(16.dp),

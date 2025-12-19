@@ -59,11 +59,7 @@ fun TitleTextField(
                 Text(
                     text = "$remainingChars/$maxChars",
                     style = MaterialTheme.typography.labelSmall,
-                    color = when {
-                        remainingChars < 0 -> MaterialTheme.colorScheme.error
-                        remainingChars < 50 -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
+                    color = MaterialTheme.colorScheme.secondary
                 )
             }
         },
@@ -111,11 +107,7 @@ fun DescriptionTextField(
                 Text(
                     text = "$remainingChars/$maxChars",
                     style = MaterialTheme.typography.labelSmall,
-                    color = when {
-                        remainingChars < 0 -> MaterialTheme.colorScheme.error
-                        remainingChars < 50 -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
+                    color = MaterialTheme.colorScheme.secondary
                 )
             }
         },
