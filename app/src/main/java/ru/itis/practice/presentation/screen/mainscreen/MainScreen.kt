@@ -50,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,6 +62,7 @@ import coil3.compose.AsyncImage
 import coil3.toUri
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
+import ru.itis.practice.R
 import ru.itis.practice.domain.entity.Movie
 import ru.itis.practice.domain.repository.MoviesRepository
 import ru.itis.practice.presentation.screen.create.CreateViewModel
@@ -109,7 +111,7 @@ fun MainScreenContent(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Movie"
+                    contentDescription = stringResource(R.string.add_movie_screen)
                 )
             }
         },
@@ -133,10 +135,10 @@ fun MainScreenContent(
                     },
                     actions = {
                         IconButton(onClick = { showBottomSheet = true }) {
-                            Box(modifier = Modifier.size(50.dp)) {  // ← ФИКС!
+                            Box(modifier = Modifier.size(50.dp)) {
                                 Icon(
                                     Icons.Default.Sort,
-                                    contentDescription = "Sort",
+                                    contentDescription = stringResource(R.string.sort),
                                     modifier = Modifier
                                         .size(50.dp)
                                         .align(Alignment.Center)
@@ -149,7 +151,7 @@ fun MainScreenContent(
                                 Box(modifier = Modifier.size(50.dp)) {
                                     Icon(
                                         Icons.Default.AccountCircle,
-                                        contentDescription = "Profile",
+                                        contentDescription = stringResource(R.string.profile_screen),
                                         modifier = Modifier
                                             .size(50.dp)
                                             .align(Alignment.Center)
@@ -166,7 +168,7 @@ fun MainScreenContent(
                             ) {
                                 AsyncImage(
                                     model = state.image,
-                                    contentDescription = "Profile Picture",
+                                    contentDescription = stringResource(R.string.profile_picture_screen),
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .clip(CircleShape),
@@ -195,7 +197,7 @@ fun MainScreenContent(
                     item {
                         Spacer(modifier = Modifier.height(100.dp))
                         Text(
-                            text = "No movies available. Click the + button to add a new movie.",
+                            text = stringResource(R.string.no_movies_available_click_the_button_to_add_a_new_movie),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
@@ -231,17 +233,17 @@ fun MainScreenContent(
     state.movieToDelete?.let { movie ->
         AlertDialog(
             onDismissRequest = { viewModel.processCommand(MainScreenCommand.CancelDelete) },
-            title = { Text("Delete Movie") },
-            text = { Text("Delete \"${movie.title}\"?") },
+            title = { Text(stringResource(R.string.delete_movie)) },
+            text = { Text(stringResource(R.string.delete_alert, movie.title)) },
             confirmButton = {
                 TextButton(
                     onClick = { viewModel.processCommand(MainScreenCommand.ConfirmDelete) }
-                ) { Text("Delete") }
+                ) { Text(stringResource(R.string.delete_alert_button)) }
             },
             dismissButton = {
                 TextButton(
                     onClick = { viewModel.processCommand(MainScreenCommand.CancelDelete) }
-                ) { Text("Cancel") }
+                ) { Text(stringResource(R.string.cancel_alert_button)) }
             }
         )
     }

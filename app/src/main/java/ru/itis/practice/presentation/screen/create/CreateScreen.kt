@@ -19,11 +19,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ru.itis.practice.R
 import ru.itis.practice.presentation.screen.create.CreateScreenCommand.InputDescription
 import ru.itis.practice.presentation.screen.create.CreateScreenCommand.InputRating
 import ru.itis.practice.presentation.screen.create.CreateScreenCommand.InputTitle
@@ -69,7 +71,7 @@ fun CreateContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.Center),
-                    shape = RoundedCornerShape(24.dp), // как в Profile
+                    shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surface
                     ),
@@ -80,9 +82,9 @@ fun CreateContent(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Add Movie",
+                            text = stringResource(R.string.add_movie),
                             modifier = Modifier.fillMaxWidth(),
-                            fontSize = 24.sp, // как в Profile
+                            fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colorScheme.onSurface

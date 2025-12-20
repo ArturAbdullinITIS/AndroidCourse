@@ -56,7 +56,7 @@ fun EmailAuthTextField(
         trailingIcon = {
             Icon(
                 imageVector = Icons.Default.Mail,
-                contentDescription = "Email"
+                contentDescription = stringResource(R.string.email_auth_field)
             )
         }
     )
@@ -98,7 +98,7 @@ fun PasswordAuthTextField(
                         onClick = onIconClick
                     ),
                 imageVector = Icons.Default.RemoveRedEye,
-                contentDescription = "Password"
+                contentDescription = stringResource(R.string.password_auth_field)
             )
         },
         isError = errorMessage.isNotBlank(),
@@ -115,7 +115,7 @@ fun LoginButton(
         onClick = onClick,
         shape = RoundedCornerShape(40.dp)
     ) {
-        Text(text = "Log In")
+        Text(text = stringResource(R.string.log_in))
     }
 }
 
@@ -124,7 +124,7 @@ fun CustomLogInIcon() {
     Icon(
         modifier = Modifier.size(100.dp),
         imageVector = Icons.Default.Key,
-        contentDescription = "Log In Icon",
+        contentDescription = stringResource(R.string.log_in_icon),
         tint = MaterialTheme.colorScheme.onPrimary,
     )
 }

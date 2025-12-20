@@ -144,8 +144,10 @@ fun ProfileContent(
             if(state.image.isNotBlank()) {
                 AsyncImage(
                     model = state.image,
-                    contentDescription = "Profile picture",
-                    Modifier.size(180.dp).clip(CircleShape),
+                    contentDescription = stringResource(R.string.profile_picture_icon),
+                    Modifier
+                        .size(180.dp)
+                        .clip(CircleShape),
                     contentScale = ContentScale.Crop
                 )
             } else {

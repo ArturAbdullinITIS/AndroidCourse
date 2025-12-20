@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import ru.itis.practice.R
 import ru.itis.practice.domain.entity.Movie
 import kotlin.toString
 
@@ -145,7 +147,7 @@ fun PfpIcon(
 ) {
     AsyncImage(
         model = model,
-        contentDescription = "Profile Picture",
+        contentDescription = stringResource(R.string.profile_picture),
         modifier = modifier
             .height(30.dp)
             .width(30.dp)
@@ -167,12 +169,12 @@ fun SortBottomSheetContent(
             .navigationBarsPadding()
             .padding(24.dp)
     ) {
-        Text("Sort Movies", style = MaterialTheme.typography.headlineSmall)
+        Text(stringResource(R.string.sort_movies), style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(24.dp))
 
-        SortOption("A-Z", SortOrder.BY_TITLE, currentSort, onSortSelected)
-        SortOption("Rating", SortOrder.BY_RATING, currentSort, onSortSelected)
-        SortOption("Year", SortOrder.BY_YEAR, currentSort, onSortSelected)
+        SortOption(stringResource(R.string.a_z), SortOrder.BY_TITLE, currentSort, onSortSelected)
+        SortOption(stringResource(R.string.rating), SortOrder.BY_RATING, currentSort, onSortSelected)
+        SortOption(stringResource(R.string.year), SortOrder.BY_YEAR, currentSort, onSortSelected)
     }
 }
 

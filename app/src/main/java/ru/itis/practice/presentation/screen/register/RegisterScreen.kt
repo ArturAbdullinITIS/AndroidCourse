@@ -85,14 +85,15 @@ private fun RegisterContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Enter your credentials to sign up!",
+                text = stringResource(R.string.enter_your_credentials_to_sign_up),
                 fontSize = 18.sp
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Card(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .offset(y = 40.dp),
                 shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
                 colors = CardDefaults.cardColors(
@@ -104,14 +105,15 @@ private fun RegisterContent(
                 ),
             ) {
                 Column(
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier
+                        .padding(20.dp)
                         .padding(horizontal = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "Sign Up",
+                        text = stringResource(R.string.sign_up_screen),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -155,7 +157,7 @@ private fun RegisterContent(
 
                     Spacer(modifier = Modifier.height(200.dp))
                     CustomClickableText(
-                        text = "Already have an account? Log In",
+                        text = stringResource(R.string.already_have_an_account_log_in),
                         onClick = onNavigateToLogin
                     )
                 }

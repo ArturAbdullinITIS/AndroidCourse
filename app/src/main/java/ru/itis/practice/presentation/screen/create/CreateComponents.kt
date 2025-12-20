@@ -15,12 +15,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import ru.itis.practice.R
 
 @Composable
 fun TitleTextField(
@@ -40,7 +42,7 @@ fun TitleTextField(
                 onValueChange(newValue)
             }
         },
-        label = { Text("Title") },
+        label = { Text(stringResource(R.string.title)) },
         shape = RoundedCornerShape(40.dp),
         singleLine = true,
         supportingText = {
@@ -64,7 +66,7 @@ fun TitleTextField(
             }
         },
         isError = errorMessage.isNotBlank() || value.length > maxChars,
-        placeholder = { Text("type movie title") }
+        placeholder = { Text(stringResource(R.string.type_movie_title)) }
     )
 }
 
@@ -87,7 +89,7 @@ fun DescriptionTextField(
                 onValueChange(newValue)
             }
         },
-        label = { Text("Description") },
+        label = { Text(stringResource(R.string.description)) },
         shape = RoundedCornerShape(24.dp),
         minLines = 3,
         maxLines = 5,
@@ -112,7 +114,7 @@ fun DescriptionTextField(
             }
         },
         isError = errorMessage.isNotBlank() || value.length > maxChars,
-        placeholder = { Text("type movie description") }
+        placeholder = { Text(stringResource(R.string.type_movie_description)) }
     )
 }
 
@@ -131,8 +133,8 @@ fun RatingTextField(
                 onRatingChange(filtered)
             }
         },
-        label = { Text("Rating (0.0 - 10.0)") },
-        placeholder = { Text("type movie rating") },
+        label = { Text(stringResource(R.string.rating_0_0_10_0)) },
+        placeholder = { Text(stringResource(R.string.type_movie_rating)) },
         shape = RoundedCornerShape(40.dp),
         modifier = modifier.fillMaxWidth(),
         textStyle = MaterialTheme.typography.bodyLarge,
@@ -173,8 +175,8 @@ fun YearInput(
             val filtered = newValue.filter { it.isDigit() }.take(4)
             onYearChange(filtered)
         },
-        label = { Text("Release Year") },
-        placeholder = { Text("type release year") },
+        label = { Text(stringResource(R.string.release_year)) },
+        placeholder = { Text(stringResource(R.string.type_release_year)) },
         shape = RoundedCornerShape(40.dp),
         modifier = modifier.fillMaxWidth(),
         textStyle = MaterialTheme.typography.bodyLarge,
@@ -205,6 +207,6 @@ fun SubmitButton(
         onClick = onClick,
         shape = RoundedCornerShape(40.dp),
     ) {
-        Text(text = "Submit")
+        Text(text = stringResource(R.string.submit))
     }
 }

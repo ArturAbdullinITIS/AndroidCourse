@@ -42,7 +42,7 @@ fun CustomProfileIcon() {
     Icon(
         modifier = Modifier.size(180.dp),
         imageVector = Icons.Default.AccountCircle,
-        contentDescription = "Sign Up Icon",
+        contentDescription = stringResource(R.string.sign_up_icon),
         tint = MaterialTheme.colorScheme.primary,
     )
 }
@@ -56,7 +56,7 @@ fun EmailProfileTextField(
         value = value,
         onValueChange = {},
         label = {
-            Text("Your Email")
+            Text(stringResource(R.string.your_email))
         },
         shape = RoundedCornerShape(40.dp),
         singleLine = true,
@@ -64,7 +64,7 @@ fun EmailProfileTextField(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Email,
-                contentDescription = "Username",
+                contentDescription = stringResource(R.string.username),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -102,7 +102,7 @@ fun UsernameEditRow(
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
-                contentDescription = "Save Username",
+                contentDescription = stringResource(R.string.save_username),
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -114,14 +114,13 @@ fun UsernameTextField(
     value: String,
     onValueChange: (String) -> Unit,
     errorMessage: String = "",
-    isSuccess: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text("Username") },
-        placeholder = { Text("Enter your username") },
+        label = { Text(stringResource(R.string.username_label)) },
+        placeholder = { Text(stringResource(R.string.enter_your_username)) },
         shape = RoundedCornerShape(40.dp),
         modifier = modifier,
         singleLine = true,
@@ -129,7 +128,7 @@ fun UsernameTextField(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Person,
-                contentDescription = "Username",
+                contentDescription = stringResource(R.string.username_icon),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
@@ -156,7 +155,7 @@ fun PfpAddButton(
     ) {
         Icon(
             imageVector = Icons.Default.Image,
-            contentDescription = "Pfp"
+            contentDescription = stringResource(R.string.pfp)
         )
     }
 }
@@ -177,7 +176,7 @@ fun PfpDeleteButton(
     ) {
         Icon(
             imageVector = Icons.Default.HideImage,
-            contentDescription = "Pfp"
+            contentDescription = stringResource(R.string.pfp)
         )
     }
 }
@@ -193,7 +192,7 @@ fun LogoutButton(
         shape = RoundedCornerShape(40.dp)
     ) {
         Text(
-            "Log Out",
+            stringResource(R.string.log_out),
         )
     }
 }
@@ -212,7 +211,7 @@ fun DeleteButton(
         )
     ) {
         Text(
-            "Delete Account",
+            stringResource(R.string.delete_account_button),
         )
     }
 }

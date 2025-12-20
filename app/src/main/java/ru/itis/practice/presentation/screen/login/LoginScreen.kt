@@ -84,7 +84,7 @@ private fun LoginContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Enter your credentials to log in!",
+                text = stringResource(R.string.enter_your_credentials_to_log_in),
                 fontSize = 18.sp
             )
 
@@ -113,7 +113,7 @@ private fun LoginContent(
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "Log In",
+                        text = stringResource(R.string.log_in_screen),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -159,7 +159,7 @@ private fun LoginContent(
                     Spacer(modifier = Modifier.height(200.dp))
 
                     CustomClickableText(
-                        text = "Don't have an account? Sign Up",
+                        text = stringResource(R.string.don_t_have_an_account_sign_up),
                         onClick = onNavigateToRegister
                     )
 

@@ -29,10 +29,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import ru.itis.practice.R
 
 
 @Composable
@@ -65,7 +67,7 @@ fun RecoveryContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Account Recovery") },
+                title = { Text(text = stringResource(R.string.account_recovery)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateToLogin) {
                         Icon(Icons.Default.ArrowBack, "Back")
@@ -85,19 +87,19 @@ fun RecoveryContent(
         ) {
             Icon(
                 Icons.Default.PersonOff,
-                "Deleted Account",
+                stringResource(R.string.deleted_account),
                 modifier = Modifier.size(64.dp),
                 tint = MaterialTheme.colorScheme.error
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                "Account Deleted",
+                stringResource(R.string.account_deleted),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                "Your account was deleted but can be restored.",
+                stringResource(R.string.your_account_was_deleted_but_can_be_restored),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge
             )
@@ -107,7 +109,7 @@ fun RecoveryContent(
                     viewModel.processCommand(RecoveryCommand.Recover(email)) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Restore Account")
+                Text(stringResource(R.string.restore_account))
             }
             Spacer(modifier = Modifier.height(16.dp))
             Button(
@@ -117,7 +119,7 @@ fun RecoveryContent(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
             ) {
-                Text("Delete Permanently")
+                Text(stringResource(R.string.delete_permanently))
             }
         }
     }
@@ -125,17 +127,17 @@ fun RecoveryContent(
     if (state.showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.processCommand(RecoveryCommand.CancelDelete) },
-            title = { Text("Delete Account Permanently") },
-            text = { Text("This action cannot be undone. Are you sure you want to permanently delete your account?") },
+            title = { Text(stringResource(R.string.delete_account_permanently)) },
+            text = { Text(stringResource(R.string.this_action_cannot_be_undone_are_you_sure_you_want_to_permanently_delete_your_account)) },
             confirmButton = {
                 TextButton(
                     onClick = { viewModel.processCommand(RecoveryCommand.DeletePermanently(email)) }
-                ) { Text("Delete") }
+                ) { Text(stringResource(R.string.delete_alert_recovery)) }
             },
             dismissButton = {
                 TextButton(
                     onClick = { viewModel.processCommand(RecoveryCommand.CancelDelete) }
-                ) { Text("Cancel") }
+                ) { Text(stringResource(R.string.cancel_alert_recovery)) }
             }
         )
     }

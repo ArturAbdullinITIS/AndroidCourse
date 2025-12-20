@@ -58,7 +58,8 @@ class ProfileViewModel @Inject constructor(
             is ProfileCommand.InputUsername -> {
                 _state.update { state ->
                     state.copy(
-                        username = command.username
+                        username = command.username,
+                        success = false
                     )
                 }
             }

@@ -65,7 +65,7 @@ fun EmailTextField(
         trailingIcon = {
             Icon(
                 imageVector = Icons.Default.Mail,
-                contentDescription = "Email"
+                contentDescription = stringResource(R.string.email_tr_icon)
             )
         }
     )
@@ -113,7 +113,7 @@ fun PasswordTextField(
                         onClick = onIconClick
                     ),
                 imageVector = Icons.Default.RemoveRedEye,
-                contentDescription = "Password"
+                contentDescription = stringResource(R.string.password_tr_icon)
             )
         },
     )
@@ -149,7 +149,7 @@ fun RegisterButton(
         shape = RoundedCornerShape(40.dp)
     ) {
         Text(
-            "Sign Up",
+            stringResource(R.string.sign_up),
         )
     }
 }
@@ -159,7 +159,7 @@ fun CustomSignUpIcon() {
     Icon(
         modifier = Modifier.size(100.dp),
         imageVector = Icons.Default.PersonAdd,
-        contentDescription = "Sign Up Icon",
+        contentDescription = stringResource(R.string.sign_up_icon_custom),
         tint = MaterialTheme.colorScheme.onPrimary,
     )
 }
