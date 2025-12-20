@@ -89,7 +89,6 @@ fun UsernameEditRow(
             value = username,
             onValueChange = onUsernameChange,
             errorMessage = errorMessage,
-            isSuccess = isSuccess,
             modifier = Modifier.weight(1f)
         )
         IconButton(
