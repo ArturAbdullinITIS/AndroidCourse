@@ -35,4 +35,5 @@ interface UserRepository {
     suspend fun hardDeleteUser(userId: Int)
     suspend fun setActiveUser(userId: Int)
 
+    suspend fun startDeleteOldUsersWork()
 }

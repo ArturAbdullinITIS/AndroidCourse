@@ -1,15 +1,23 @@
 package ru.itis.practice.data.repo.impl
 
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import ru.itis.practice.data.background.DeleteUsersWorker
 import ru.itis.practice.data.model.UserDbModel
 import ru.itis.practice.data.repo.dao.UserDao
 import ru.itis.practice.data.session.SessionDataStore
+import ru.itis.practice.data.session.SessionManager
 import ru.itis.practice.domain.repository.UserRepository
 import ru.itis.practice.util.PasswordHasher
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
-    private val sessionDataStore: SessionDataStore
+    private val sessionDataStore: SessionDataStore,
+    private val workManager: WorkManager
 ): UserRepository {
 
     override suspend fun registerUser(email: String, password: String): Boolean {
@@ -46,6 +54,22 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun restoreUser(userId: Int) {
         userDao.restoreUser(userId)
+    }
+
+    override suspend fun startDeleteOldUsersWork() {
+        val constraints = Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .build()
+        val request = PeriodicWorkRequestBuilder<DeleteUsersWorker>(
+            1, TimeUnit.DAYS
+        )
+            .setConstraints(constraints)
+            .build()
+        workManager.enqueueUniquePeriodicWork(
+            "Delete Old Users",
+            ExistingPeriodicWorkPolicy.KEEP,
+            request
+        )
     }
 
     override suspend fun deleteOldUsers() {

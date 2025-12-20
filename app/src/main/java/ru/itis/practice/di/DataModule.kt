@@ -2,6 +2,7 @@ package ru.itis.practice.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.work.WorkManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -57,6 +58,12 @@ interface DataModule {
         ): SessionDataStore {
             return SessionDataStore(context)
         }
+
+        @Singleton
+        @Provides
+        fun provideWorkManager(
+            @ApplicationContext context: Context
+        ): WorkManager = WorkManager.getInstance(context)
 
         @Provides
         @Singleton
