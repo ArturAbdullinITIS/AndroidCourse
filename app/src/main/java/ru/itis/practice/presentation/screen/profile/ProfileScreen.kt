@@ -101,7 +101,7 @@ fun ProfileContent(
                 color = MaterialTheme.colorScheme.primary,
                 tonalElevation = 8.dp,
                 shadowElevation = 8.dp,
-                shape = MaterialTheme.shapes.large
+                shape = MaterialTheme.shapes.small
             ) {
                 TopAppBar(
                     title = {

@@ -120,7 +120,7 @@ fun MainScreenContent(
                 color = MaterialTheme.colorScheme.primary,
                 tonalElevation = 8.dp,
                 shadowElevation = 8.dp,
-                shape = MaterialTheme.shapes.large
+                shape = MaterialTheme.shapes.small
             ) {
                 TopAppBar(
                     title = {
@@ -189,7 +189,6 @@ fun MainScreenContent(
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            HorizontalDivider(modifier = Modifier.padding(horizontal = 32.dp))
             LazyColumn(
                 state = listState
             ) {

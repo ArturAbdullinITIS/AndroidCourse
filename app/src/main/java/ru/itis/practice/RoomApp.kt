@@ -7,6 +7,7 @@ import androidx.work.Configuration
 import androidx.work.WorkerFactory
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.itis.practice.data.session.SessionManager
 import ru.itis.practice.presentation.startup.AppStartUpManager
@@ -27,8 +28,10 @@ class RoomApp: Application(), Configuration.Provider {
         super.onCreate()
         MainScope().launch {
             sessionManager.initializeSession()
+            delay(3000)
+            appStartUpManager.startDeleteOldUsersWork()
+
         }
-        appStartUpManager.startDeleteOldUsersWork()
     }
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
