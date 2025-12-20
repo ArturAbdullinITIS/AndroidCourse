@@ -161,8 +161,8 @@ fun DeleteButton(
         onClick = onClick,
         shape = RoundedCornerShape(40.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer,
-            contentColor = MaterialTheme.colorScheme.onErrorContainer
+            containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.65f),
+            contentColor = MaterialTheme.colorScheme.onError
         )
     ) {
         Text(

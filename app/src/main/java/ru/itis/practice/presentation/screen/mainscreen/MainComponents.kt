@@ -147,8 +147,8 @@ fun SortBottomSheetContent(
         Spacer(Modifier.height(24.dp))
 
         SortOption("A-Z", SortOrder.BY_TITLE, currentSort, onSortSelected)
-        SortOption("Rating ↓", SortOrder.BY_RATING, currentSort, onSortSelected)
-        SortOption("Year ↓", SortOrder.BY_YEAR, currentSort, onSortSelected)
+        SortOption("Rating", SortOrder.BY_RATING, currentSort, onSortSelected)
+        SortOption("Year", SortOrder.BY_YEAR, currentSort, onSortSelected)
     }
 }
 

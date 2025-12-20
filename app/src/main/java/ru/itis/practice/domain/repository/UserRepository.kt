@@ -19,7 +19,9 @@ interface UserRepository {
     suspend fun getUserEmail(): String
 
     suspend fun getUsername(): String
+
     suspend fun setSessionActive(isActive: Boolean)
+
     suspend fun syncSessionWithDatabase()
 
     suspend fun softDeleteUser()
@@ -33,6 +35,7 @@ interface UserRepository {
     suspend fun findDeletedByEmail(email: String): UserDbModel?
 
     suspend fun hardDeleteUser(userId: Int)
+
     suspend fun setActiveUser(userId: Int)
 
     suspend fun startDeleteOldUsersWork()

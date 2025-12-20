@@ -1,24 +1,18 @@
 package ru.itis.practice.presentation.screen.profile
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -26,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -44,19 +39,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ru.itis.practice.R
-import ru.itis.practice.presentation.screen.login.CustomLogInIcon
-import ru.itis.practice.presentation.screen.login.EmailAuthTextField
-import ru.itis.practice.presentation.screen.login.LoginButton
-import ru.itis.practice.presentation.screen.login.LoginCommand
-import ru.itis.practice.presentation.screen.login.PasswordAuthTextField
-
 
 @Composable
 fun ProfileScreen(
     onNavigateBack: () -> Unit,
     onNavigateToLogIn: () -> Unit,
 ) {
-    ProfileContent(onNavigateBack,onNavigateToLogIn)
+    ProfileContent(onNavigateBack, onNavigateToLogIn)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,103 +61,98 @@ fun ProfileContent(
 
     LaunchedEffect(state.success) {
         if (state.success) {
-            Toast.makeText(context,
-                context.getString(R.string.username_updated_successfully), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.username_updated_successfully),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     LaunchedEffect(state.loggedOut) {
-        if(state.loggedOut) {
+        if (state.loggedOut) {
             onNavigateToLogIn()
         }
     }
 
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.primary
+        topBar = {
+            Surface(
+                color = MaterialTheme.colorScheme.primary,
+                tonalElevation = 8.dp,
+                shadowElevation = 8.dp,
+                shape = MaterialTheme.shapes.large
+            ) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = stringResource(R.string.profile),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    actions = {
+                        IconButton(onClick = onNavigateBack) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(R.string.back),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.Center),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(28.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = stringResource(R.string.profile),
-                            fontSize = 24.sp,
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(20.dp))
 
-                        EmailProfileTextField(value = state.email)
+            Spacer(modifier = Modifier.height(16.dp))
 
-                        Spacer(modifier = Modifier.height(20.dp))
+            EmailProfileTextField(value = state.email)
 
-                        UsernameEditRow(
-                            username = state.username,
-                            onUsernameChange = { viewModel.processCommand(ProfileCommand.InputUsername(it)) },
-                            onSaveUsername = { viewModel.processCommand(ProfileCommand.SetUsername) },
-                            errorMessage = state.errorMessage,
-                            isSuccess = state.success
-                        )
+            Spacer(modifier = Modifier.height(20.dp))
 
-                        Spacer(modifier = Modifier.height(32.dp))
+            UsernameEditRow(
+                username = state.username,
+                onUsernameChange = { viewModel.processCommand(ProfileCommand.InputUsername(it)) },
+                onSaveUsername = { viewModel.processCommand(ProfileCommand.SetUsername) },
+                errorMessage = state.errorMessage,
+                isSuccess = state.success
+            )
 
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.outlineVariant
-                        )
+            Spacer(modifier = Modifier.height(32.dp))
 
-                        Spacer(modifier = Modifier.height(24.dp))
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant
+            )
 
-                        LogoutButton(
-                            onClick = { viewModel.processCommand(ProfileCommand.Logout) }
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        DeleteButton(
-                            onClick = { viewModel.processCommand(ProfileCommand.ShowDeleteDialog) }
-                        )
+            Spacer(modifier = Modifier.height(24.dp))
 
-                    }
-                }
+            LogoutButton(
+                onClick = { viewModel.processCommand(ProfileCommand.Logout) }
+            )
 
-                IconButton(
-                    onClick = onNavigateBack,
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(top = 20.dp, start = 12.dp)
-                        .size(48.dp),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBackIosNew,
-                        contentDescription = stringResource(R.string.back),
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+            Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(80.dp))
+            DeleteButton(
+                onClick = { viewModel.processCommand(ProfileCommand.ShowDeleteDialog) }
+            )
         }
     }
 
@@ -176,7 +160,13 @@ fun ProfileContent(
         AlertDialog(
             onDismissRequest = { viewModel.processCommand(ProfileCommand.CancelDelete) },
             title = { Text(stringResource(R.string.delete_account)) },
-            text = { Text(stringResource(R.string.are_you_sure_you_want_to_delete_your_account_you_will_have_7_days_to_restore_it)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.are_you_sure_you_want_to_delete_your_account_you_will_have_7_days_to_restore_it
+                    )
+                )
+            },
             confirmButton = {
                 TextButton(
                     onClick = { viewModel.processCommand(ProfileCommand.DeleteAccount) }
@@ -190,3 +180,4 @@ fun ProfileContent(
         )
     }
 }
+

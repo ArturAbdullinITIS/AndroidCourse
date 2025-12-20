@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
@@ -27,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -78,6 +80,7 @@ fun MainScreenContent(
     var showBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -95,31 +98,45 @@ fun MainScreenContent(
             }
         },
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Your Movies",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.fillMaxWidth()
+            Surface(
+                color = MaterialTheme.colorScheme.primary,
+                tonalElevation = 8.dp,
+                shadowElevation = 8.dp,
+                shape = MaterialTheme.shapes.large
+            ) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "Your Movies",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    },
+                    actions = {
+                        IconButton(onClick = { showBottomSheet = true }) {
+                            Icon(Icons.Default.Sort, contentDescription = "Sort")
+                        }
+                        IconButton(onClick = onNavigateToProfile) {
+                            Icon(Icons.Default.AccountCircle, "Profile")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                     )
-                },
-                actions = {
-                    IconButton(onClick = { showBottomSheet = true }) {
-                        Icon(Icons.Default.Sort, contentDescription = "Sort")
-                    }
-                    IconButton(onClick = onNavigateToProfile) {
-                        Icon(Icons.Default.AccountCircle, "Profile")
-                    }
-                }
-            )
+                )
+            }
         },
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
             HorizontalDivider(modifier = Modifier.padding(horizontal = 32.dp))
-            LazyColumn {
+            LazyColumn(
+                state = listState
+            ){
                 if (sortedMovies.isEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(100.dp))
