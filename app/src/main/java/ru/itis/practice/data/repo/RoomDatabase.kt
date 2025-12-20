@@ -10,7 +10,7 @@ import ru.itis.practice.data.repo.dao.UserDao
 
 @Database(
     entities = [UserDbModel::class, MovieDbModel::class],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class RoomDatabase: RoomDatabase() {
