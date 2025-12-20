@@ -47,7 +47,7 @@ class MainViewModel @Inject constructor(
     val sortedMovies: StateFlow<List<Movie>> = getAllMoviesUseCase()
         .combine(state) { movies, currentState ->
             when(currentState.sortOrder) {
-                SortOrder.BY_TITLE -> movies.sortedByDescending { it.title }
+                SortOrder.BY_TITLE -> movies.sortedBy{ it.title }
                 SortOrder.BY_RATING -> movies.sortedByDescending { it.rating }
                 SortOrder.BY_YEAR -> movies.sortedByDescending{ it.releaseYear }
             }
