@@ -1,7 +1,9 @@
 package ru.itis.practice.presentation.screen.mainscreen
 
+import android.R.attr.onClick
 import android.text.TextUtils.isEmpty
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -36,13 +39,17 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +57,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
+import coil3.toUri
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 import ru.itis.practice.domain.entity.Movie
@@ -63,7 +72,10 @@ fun MainScreen(
     onNavigateToProfile: () -> Unit
 ) {
 
-    MainScreenContent(onNavigateToCreate = onNavigateToCreate, onNavigateToProfile = onNavigateToProfile)
+    MainScreenContent(
+        onNavigateToCreate = onNavigateToCreate,
+        onNavigateToProfile = onNavigateToProfile
+    )
 }
 
 
@@ -81,6 +93,10 @@ fun MainScreenContent(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
+
+    LaunchedEffect(state.image) {
+        viewModel.processCommand(MainScreenCommand.RefreshImage)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -108,17 +124,55 @@ fun MainScreenContent(
                     title = {
                         Text(
                             text = "Your Movies",
-                            fontSize = 24.sp,
+                            fontSize = 28.sp,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 8.dp)
                         )
                     },
                     actions = {
                         IconButton(onClick = { showBottomSheet = true }) {
-                            Icon(Icons.Default.Sort, contentDescription = "Sort")
+                            Box(modifier = Modifier.size(50.dp)) {  // ← ФИКС!
+                                Icon(
+                                    Icons.Default.Sort,
+                                    contentDescription = "Sort",
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .align(Alignment.Center)
+                                )
+                            }
                         }
-                        IconButton(onClick = onNavigateToProfile) {
-                            Icon(Icons.Default.AccountCircle, "Profile")
+                        Spacer(modifier = Modifier.width(8.dp))
+                        if (state.image.isBlank()) {
+                            IconButton(onClick = onNavigateToProfile) {
+                                Box(modifier = Modifier.size(50.dp)) {
+                                    Icon(
+                                        Icons.Default.AccountCircle,
+                                        contentDescription = "Profile",
+                                        modifier = Modifier
+                                            .size(50.dp)
+                                            .align(Alignment.Center)
+                                    )
+                                }
+                            }
+                        } else {
+                            Box(
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .clickable { onNavigateToProfile() }
+                                    .clip(CircleShape)
+                                    .padding(4.dp)
+                            ) {
+                                AsyncImage(
+                                    model = state.image,
+                                    contentDescription = "Profile Picture",
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(CircleShape),
+                                    contentScale = ContentScale.Crop,
+                                )
+                            }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -136,7 +190,7 @@ fun MainScreenContent(
             HorizontalDivider(modifier = Modifier.padding(horizontal = 32.dp))
             LazyColumn(
                 state = listState
-            ){
+            ) {
                 if (sortedMovies.isEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(100.dp))

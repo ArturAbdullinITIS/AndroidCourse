@@ -2,9 +2,11 @@ package ru.itis.practice.presentation.screen.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -13,6 +15,8 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.HideImage
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
@@ -36,7 +40,7 @@ import ru.itis.practice.R
 @Composable
 fun CustomProfileIcon() {
     Icon(
-        modifier = Modifier.size(100.dp),
+        modifier = Modifier.size(180.dp),
         imageVector = Icons.Default.AccountCircle,
         contentDescription = "Sign Up Icon",
         tint = MaterialTheme.colorScheme.primary,
@@ -137,6 +141,47 @@ fun UsernameTextField(
     )
 }
 
+@Composable
+fun PfpAddButton(
+    onClick: () -> Unit,
+) {
+    IconButton(
+        modifier = Modifier,
+        onClick = onClick,
+        shape = RoundedCornerShape(40.dp),
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    ) {
+        Icon(
+            imageVector = Icons.Default.Image,
+            contentDescription = "Pfp"
+        )
+    }
+}
+
+
+@Composable
+fun PfpDeleteButton(
+    onClick: () -> Unit,
+) {
+    IconButton(
+        modifier = Modifier,
+        onClick = onClick,
+        shape = RoundedCornerShape(40.dp),
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.error,
+            contentColor = MaterialTheme.colorScheme.onError
+        )
+    ) {
+        Icon(
+            imageVector = Icons.Default.HideImage,
+            contentDescription = "Pfp"
+        )
+    }
+}
+
 
 @Composable
 fun LogoutButton(
@@ -152,6 +197,7 @@ fun LogoutButton(
         )
     }
 }
+
 @Composable
 fun DeleteButton(
     onClick: () -> Unit,
@@ -170,5 +216,6 @@ fun DeleteButton(
         )
     }
 }
+
 
 

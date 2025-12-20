@@ -1,15 +1,21 @@
 package ru.itis.practice.presentation.screen.profile
 
+import android.net.Uri
 import androidx.compose.runtime.MutableState
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil3.toUri
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.itis.practice.domain.usecase.AddImageUseCase
+import ru.itis.practice.domain.usecase.DeleteImageUseCase
 import ru.itis.practice.domain.usecase.DeleteUserUseCase
 import ru.itis.practice.domain.usecase.GetUserEmailUseCase
+import ru.itis.practice.domain.usecase.GetUserImageUseCase
 import ru.itis.practice.domain.usecase.GetUsernameUseCase
 import ru.itis.practice.domain.usecase.LogoutUseCase
 import ru.itis.practice.domain.usecase.SetUserNameUseCase
@@ -23,7 +29,10 @@ class ProfileViewModel @Inject constructor(
     private val getUserEmailUseCase: GetUserEmailUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val getUsernameUseCase: GetUsernameUseCase,
-    private val deleteAccountUseCase: DeleteUserUseCase
+    private val deleteAccountUseCase: DeleteUserUseCase,
+    private val addImageUseCase: AddImageUseCase,
+    private val getUserImageUseCase: GetUserImageUseCase,
+    private val deleteImageUseCase: DeleteImageUseCase
 ): ViewModel() {
     private val _state = MutableStateFlow(ProfileScreenState())
     val state = _state.asStateFlow()
@@ -32,11 +41,13 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             val userEmail = getUserEmailUseCase()
             val username = getUsernameUseCase()
+            val image = getUserImageUseCase()
             oldName = username
             _state.update { state ->
                 state.copy(
                     email = userEmail,
-                    username = username
+                    username = username,
+                    image = image
                 )
             }
         }
@@ -107,6 +118,29 @@ class ProfileViewModel @Inject constructor(
                     state.copy(showDeleteDialog = false)
                 }
             }
+
+            is ProfileCommand.AddImage -> {
+                viewModelScope.launch {
+                    _state.update { state ->
+                        state.copy(
+                            image = command.uri.toString()
+                        )
+                    }
+                    val imagePath = _state.value.image
+                    addImageUseCase(imagePath)
+                }
+            }
+
+            ProfileCommand.DeleteImage -> {
+                viewModelScope.launch {
+                    _state.update { state ->
+                        state.copy(
+                            image = ""
+                        )
+                    }
+                    deleteImageUseCase()
+                }
+            }
         }
     }
 }
@@ -118,11 +152,15 @@ sealed interface ProfileCommand {
     data object DeleteAccount : ProfileCommand
     data object ShowDeleteDialog : ProfileCommand
     data object CancelDelete : ProfileCommand
+    data class AddImage(val uri: Uri?) : ProfileCommand
+
+    data object DeleteImage : ProfileCommand
 }
 
 data class ProfileScreenState(
     val username: String = "",
     val email: String = "",
+    val image: String = "",
     val errorMessage: String = "",
     val success: Boolean = false,
     val loggedOut: Boolean = false,

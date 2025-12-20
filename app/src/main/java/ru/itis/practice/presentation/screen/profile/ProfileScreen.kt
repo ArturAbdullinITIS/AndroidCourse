@@ -1,13 +1,18 @@
 package ru.itis.practice.presentation.screen.profile
 
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -31,13 +36,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
 import ru.itis.practice.R
 
 @Composable
@@ -58,6 +68,15 @@ fun ProfileContent(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            uri?.let {
+                viewModel.processCommand(ProfileCommand.AddImage(uri))
+
+            }
+        }
+    )
 
     LaunchedEffect(state.success) {
         if (state.success) {
@@ -120,6 +139,34 @@ fun ProfileContent(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if(state.image.isNotBlank()) {
+                AsyncImage(
+                    model = state.image,
+                    contentDescription = "Profile picture",
+                    Modifier.size(180.dp).clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                CustomProfileIcon()
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row {
+                PfpAddButton(
+                    onClick = {
+                        imagePicker.launch("image/*")
+                    }
+                )
+                PfpDeleteButton(
+                    onClick = {
+                        viewModel.processCommand(ProfileCommand.DeleteImage)
+                    }
+                )
+            }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 

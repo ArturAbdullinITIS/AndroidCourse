@@ -20,6 +20,8 @@ interface UserRepository {
 
     suspend fun getUsername(): String
 
+    suspend fun getUserImage(): String
+
     suspend fun setSessionActive(isActive: Boolean)
 
     suspend fun syncSessionWithDatabase()
@@ -39,4 +41,8 @@ interface UserRepository {
     suspend fun setActiveUser(userId: Int)
 
     suspend fun startDeleteOldUsersWork()
+
+    suspend fun addImage(imagePath: String)
+
+    suspend fun deleteImage()
 }

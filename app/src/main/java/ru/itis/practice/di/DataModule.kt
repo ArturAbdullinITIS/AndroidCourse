@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.itis.practice.data.image.ImageFileManager
 import ru.itis.practice.data.session.SessionDataStore
 import ru.itis.practice.data.repo.dao.MovieDao
 import ru.itis.practice.data.repo.impl.MoviesRepositoryImpl
@@ -79,6 +80,14 @@ interface DataModule {
             database: RoomDatabase
         ): MovieDao {
             return database.movieDao()
+        }
+
+        @Provides
+        @Singleton
+        fun provideImageFileManager(
+            @ApplicationContext context: Context
+        ): ImageFileManager {
+            return ImageFileManager(context)
         }
 
         @Provides

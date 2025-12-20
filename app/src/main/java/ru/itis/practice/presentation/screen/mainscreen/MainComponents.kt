@@ -1,5 +1,6 @@
 package ru.itis.practice.presentation.screen.mainscreen
 
+import android.net.Uri
 import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -23,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.StrokeCap
@@ -34,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import ru.itis.practice.domain.entity.Movie
 import kotlin.toString
 
@@ -130,6 +134,26 @@ fun MovieRating(rating: Double) {
             fontSize = 14.sp
         )
     }
+}
+
+
+@Composable
+fun PfpIcon(
+    model: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AsyncImage(
+        model = model,
+        contentDescription = "Profile Picture",
+        modifier = modifier
+            .height(30.dp)
+            .width(30.dp)
+            .clickable {
+                onClick()
+            }
+            .clip(CircleShape)
+    )
 }
 
 @Composable

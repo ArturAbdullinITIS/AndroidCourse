@@ -20,17 +20,30 @@ import kotlinx.coroutines.launch
 import ru.itis.practice.domain.entity.Movie
 import ru.itis.practice.domain.usecase.DeleteMovieUseCase
 import ru.itis.practice.domain.usecase.GetAllMoviesUseCase
+import ru.itis.practice.domain.usecase.GetUserImageUseCase
 import javax.inject.Inject
 
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getAllMoviesUseCase: GetAllMoviesUseCase,
-    private val deleteMovieUseCase: DeleteMovieUseCase
+    private val deleteMovieUseCase: DeleteMovieUseCase,
+    private val getUserImageUseCase: GetUserImageUseCase
+
 ): ViewModel() {
     private val _state = MutableStateFlow(MainScreenState())
     val state = _state.asStateFlow()
 
+
+    init {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    image = getUserImageUseCase()
+                )
+            }
+        }
+    }
     val sortedMovies: StateFlow<List<Movie>> = getAllMoviesUseCase()
         .combine(state) { movies, currentState ->
             when(currentState.sortOrder) {
@@ -80,6 +93,17 @@ class MainViewModel @Inject constructor(
                     )
                 }
             }
+
+            MainScreenCommand.RefreshImage -> {
+                viewModelScope.launch {
+                    val image = getUserImageUseCase()
+                    _state.update { state ->
+                        state.copy(
+                            image = image
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -91,12 +115,14 @@ sealed interface MainScreenCommand {
     data object ConfirmDelete : MainScreenCommand
     data object CancelDelete : MainScreenCommand
     data class ChangeSortOrder(val sortOrder: SortOrder) : MainScreenCommand
+    data object RefreshImage : MainScreenCommand
 }
 
 
 data class MainScreenState(
     val movieToDelete: Movie? = null,
     val sortOrder: SortOrder = SortOrder.BY_TITLE,
+    val image: String = ""
 )
 
 enum class SortOrder {

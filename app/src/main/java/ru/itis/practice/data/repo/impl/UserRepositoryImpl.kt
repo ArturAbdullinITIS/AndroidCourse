@@ -5,6 +5,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import ru.itis.practice.data.background.DeleteUsersWorker
+import ru.itis.practice.data.image.ImageFileManager
 import ru.itis.practice.data.model.UserDbModel
 import ru.itis.practice.data.repo.dao.UserDao
 import ru.itis.practice.data.session.SessionDataStore
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
     private val sessionDataStore: SessionDataStore,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val imageFileManager: ImageFileManager
 ): UserRepository {
 
     override suspend fun registerUser(email: String, password: String): Boolean {
@@ -70,6 +72,19 @@ class UserRepositoryImpl @Inject constructor(
             ExistingPeriodicWorkPolicy.KEEP,
             request
         )
+    }
+
+    override suspend fun addImage(imagePath: String) {
+        val userId = getActiveUserId() ?: return
+        val imagePathInternal = imageFileManager.copyImageToInternalStorage(imagePath)
+        userDao.addImage(userId, imagePathInternal)
+    }
+
+    override suspend fun deleteImage() {
+        val userId = getActiveUserId() ?: return
+        val imagePath = userDao.getUserImage(userId) ?: ""
+        imageFileManager.deleteImage(imagePath)
+        userDao.deleteImage(userId)
     }
 
     override suspend fun deleteOldUsers() {
@@ -131,5 +146,10 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUsername(): String {
         val userId = getActiveUserId() ?: return ""
         return userDao.getUserName(userId)
+    }
+
+    override suspend fun getUserImage(): String {
+        val userId = getActiveUserId() ?: return ""
+        return userDao.getUserImage(userId) ?: ""
     }
 }

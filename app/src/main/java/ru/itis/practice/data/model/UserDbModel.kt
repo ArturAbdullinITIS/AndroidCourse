@@ -18,5 +18,7 @@ data class UserDbModel (
     @ColumnInfo(name="is_active")
     val isActive: Boolean = true,
     @ColumnInfo(name="deleted_at")
-    val deletedAt: Long? = null
+    val deletedAt: Long? = null,
+    @ColumnInfo(name="image")
+    val image: String? = null
 )

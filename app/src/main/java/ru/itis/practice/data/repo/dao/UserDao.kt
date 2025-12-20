@@ -50,4 +50,14 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE email = :email AND deleted_at IS NOT NULL LIMIT 1")
     suspend fun findDeletedByEmail(email: String): UserDbModel?
+
+
+    @Query("UPDATE users SET image = :imagePath WHERE id = :userId")
+    suspend fun addImage(userId: Int, imagePath: String)
+
+    @Query("SELECT image FROM users WHERE id = :userId LIMIT 1")
+    suspend fun getUserImage(userId: Int): String?
+
+    @Query("UPDATE users SET image = NULL WHERE id = :userId")
+    suspend fun deleteImage(userId: Int)
 }
