@@ -1,5 +1,6 @@
 package ru.itis.practice.presentation.screen.profile
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,9 +33,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.itis.practice.R
+import ru.itis.practice.presentation.ui.theme.Green
 
 
 @Composable
@@ -72,48 +75,13 @@ fun EmailProfileTextField(
 }
 
 @Composable
-fun UsernameEditRow(
-    username: String,
-    onUsernameChange: (String) -> Unit,
-    onSaveUsername: () -> Unit,
-    errorMessage: String,
-    isSuccess: Boolean,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        UsernameTextField(
-            value = username,
-            onValueChange = onUsernameChange,
-            errorMessage = errorMessage,
-            modifier = Modifier.weight(1f)
-        )
-        IconButton(
-            onClick = onSaveUsername,
-            modifier = Modifier.size(56.dp),
-            colors = IconButtonDefaults.iconButtonColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        ) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = stringResource(R.string.save_username),
-                modifier = Modifier.size(24.dp)
-            )
-        }
-    }
-}
-
-@Composable
 fun UsernameTextField(
+    success: Boolean,
     value: String,
     onValueChange: (String) -> Unit,
     errorMessage: String = "",
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onEditUsername: () -> Unit
 ) {
     OutlinedTextField(
         value = value,
@@ -121,7 +89,7 @@ fun UsernameTextField(
         label = { Text(stringResource(R.string.username_label)) },
         placeholder = { Text(stringResource(R.string.enter_your_username)) },
         shape = RoundedCornerShape(40.dp),
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         singleLine = true,
         isError = errorMessage.isNotBlank(),
         leadingIcon = {
@@ -135,6 +103,20 @@ fun UsernameTextField(
             if (errorMessage.isNotBlank()) {
                 Text(errorMessage, color = MaterialTheme.colorScheme.error)
             }
+            if (success) {
+                Text("Username changed!", color = Green)
+            }
+        },
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = "Edit username",
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable {
+                    onEditUsername()
+                }
+            )
         }
     )
 }
@@ -169,7 +151,7 @@ fun PfpDeleteButton(
         onClick = onClick,
         shape = RoundedCornerShape(40.dp),
         colors = IconButtonDefaults.iconButtonColors(
-            containerColor = MaterialTheme.colorScheme.error,
+            containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.65f),
             contentColor = MaterialTheme.colorScheme.onError
         )
     ) {

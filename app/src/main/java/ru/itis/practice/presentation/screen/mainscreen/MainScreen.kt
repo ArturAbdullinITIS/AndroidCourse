@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.AccountCircle
@@ -120,7 +121,7 @@ fun MainScreenContent(
                 color = MaterialTheme.colorScheme.primary,
                 tonalElevation = 8.dp,
                 shadowElevation = 8.dp,
-                shape = MaterialTheme.shapes.small
+                shape = RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp)
             ) {
                 TopAppBar(
                     title = {

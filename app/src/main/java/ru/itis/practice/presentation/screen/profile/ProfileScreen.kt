@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -78,16 +80,6 @@ fun ProfileContent(
         }
     )
 
-    LaunchedEffect(state.success) {
-        if (state.success) {
-            Toast.makeText(
-                context,
-                context.getString(R.string.username_updated_successfully),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-
     LaunchedEffect(state.loggedOut) {
         if (state.loggedOut) {
             onNavigateToLogIn()
@@ -101,13 +93,13 @@ fun ProfileContent(
                 color = MaterialTheme.colorScheme.primary,
                 tonalElevation = 8.dp,
                 shadowElevation = 8.dp,
-                shape = MaterialTheme.shapes.small
+                shape = RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp)
             ) {
                 TopAppBar(
                     title = {
                         Text(
                             text = stringResource(R.string.profile),
-                            fontSize = 24.sp,
+                            fontSize = 28.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.fillMaxWidth(),
                             color = MaterialTheme.colorScheme.onPrimary
@@ -176,12 +168,12 @@ fun ProfileContent(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            UsernameEditRow(
-                username = state.username,
-                onUsernameChange = { viewModel.processCommand(ProfileCommand.InputUsername(it)) },
-                onSaveUsername = { viewModel.processCommand(ProfileCommand.SetUsername) },
+            UsernameTextField(
+                success = state.success,
+                value = state.username,
+                onValueChange = { viewModel.processCommand(ProfileCommand.InputUsername(it)) },
+                onEditUsername = { viewModel.processCommand(ProfileCommand.SetUsername) },
                 errorMessage = state.errorMessage,
-                isSuccess = state.success
             )
 
             Spacer(modifier = Modifier.height(32.dp))
