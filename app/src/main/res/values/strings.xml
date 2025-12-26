@@ -101,4 +101,5 @@
     <string name="enter_your_credentials_to_sign_up">Enter your credentials to sign up!</string>
     <string name="sign_up_screen">Sign Up</string>
     <string name="already_have_an_account_log_in">Already have an account? Log In</string>
+    <string name="failed_to_add_movie">failed to add movie</string>
 </resources>

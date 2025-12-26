@@ -4,6 +4,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import kotlinx.coroutines.runBlocking
 import ru.itis.practice.data.background.DeleteUsersWorker
 import ru.itis.practice.data.image.ImageFileManager
 import ru.itis.practice.data.model.UserDbModel
@@ -22,6 +23,7 @@ class UserRepositoryImpl @Inject constructor(
     private val imageFileManager: ImageFileManager
 ): UserRepository {
 
+    private var cachedUserId: Int? = null
     override suspend fun registerUser(email: String, password: String): Boolean {
         val existingUser = userDao.findUserByEmail(email)
         if (existingUser != null) {
@@ -34,7 +36,7 @@ class UserRepositoryImpl @Inject constructor(
         )
 
         val insertedId = userDao.registerUser(userDbModel)
-
+        cachedUserId = insertedId.toInt()
         userDao.clearActiveUser()
         userDao.setActiveUser(insertedId.toInt())
         setSessionActive(true)
@@ -113,7 +115,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun loginUser(email: String, password: String): Boolean {
         val user = userDao.findUserByEmail(email) ?: return false
-
+        cachedUserId = user.id
         if (!PasswordHasher.verify(password, user.passwordHash)) {
             return false
         }
@@ -124,13 +126,19 @@ class UserRepositoryImpl @Inject constructor(
         return true
     }
 
-    override suspend fun getActiveUserId(): Int? {
-        return userDao.getActiveUserId()
+    override fun getActiveUserId(): Int? {
+        if (cachedUserId == null) {
+            cachedUserId = runBlocking {
+                userDao.getActiveUserId()
+            }
+        }
+        return cachedUserId
     }
 
     override suspend fun logout() {
         userDao.clearActiveUser()
         sessionDataStore.setLoggedIn(false)
+        cachedUserId = null
     }
 
     override suspend fun setUserName(userName: String) {

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.itis.practice.domain.usecase.AddMovieUseCase
+import ru.itis.practice.domain.usecase.MovieField
 import ru.itis.practice.domain.usecase.MovieValidationResult
 import javax.inject.Inject
 
@@ -54,10 +55,11 @@ class CreateViewModel @Inject constructor(
             } else {
                 _state.update { state ->
                     state.copy(
-                        titleError = result.errors["title"],
-                        descriptionError = result.errors["description"],
-                        ratingError = result.errors["rating"],
-                        yearError = result.errors["year"]
+                        titleError = result.errors[MovieField.TITLE],
+                        descriptionError = result.errors[MovieField.DESCRIPTION],
+                        ratingError = result.errors[MovieField.RATING],
+                        yearError = result.errors[MovieField.YEAR],
+                        dbError = result.dbError
                     )
                 }
             }
@@ -82,4 +84,6 @@ data class CreateScreenState(
     val ratingError: String? = null,
     val releaseYear: String = "",
     val yearError: String? = null,
-    val success: Boolean = false, )
+    val success: Boolean = false,
+    val dbError: String? = null
+)

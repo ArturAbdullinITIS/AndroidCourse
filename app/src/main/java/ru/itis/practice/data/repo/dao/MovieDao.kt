@@ -12,7 +12,7 @@ import ru.itis.practice.data.model.MovieDbModel
 interface MovieDao {
 
     @Query("SELECT * FROM movies WHERE user_id = :userId")
-    fun getAllMovies(userId: Int?): Flow<List<MovieDbModel>>
+    fun getAllMovies(userId: Int): Flow<List<MovieDbModel>>
 
 
     @Insert(onConflict = OnConflictStrategy.ABORT)

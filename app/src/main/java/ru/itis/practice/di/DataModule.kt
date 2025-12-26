@@ -20,6 +20,7 @@ import ru.itis.practice.domain.repository.MoviesRepository
 import ru.itis.practice.domain.repository.UserRepository
 import ru.itis.practice.util.ErrorParser
 import ru.itis.practice.util.ResourceProvider
+import ru.itis.practice.util.ResourceProviderImpl
 import javax.inject.Singleton
 
 
@@ -37,6 +38,12 @@ interface DataModule {
     fun bindMovieRepository(
         impl: MoviesRepositoryImpl
     ): MoviesRepository
+
+    @Binds
+    @Singleton
+    fun bindResourceProvider(
+        impl: ResourceProviderImpl
+    ): ResourceProvider
 
     companion object {
 
@@ -88,14 +95,6 @@ interface DataModule {
             @ApplicationContext context: Context
         ): ImageFileManager {
             return ImageFileManager(context)
-        }
-
-        @Provides
-        @Singleton
-        fun provideResourceProvider(
-            @ApplicationContext context: Context
-        ): ResourceProvider {
-            return ResourceProvider(context)
         }
 
         @Provides
