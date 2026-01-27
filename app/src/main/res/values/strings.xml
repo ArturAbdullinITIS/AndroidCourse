@@ -1,3 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Practice</string>
+
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="continue_button">Continue</string>
+    <string name="create_note_button">Create Note</string>
+    <string name="email_blank_error">Email cannot be blank!</string>
+    <string name="email_format_error">Incorrect email form</string>
+    <string name="password_blank_error">Password cannot be blank!</string>
+    <string name="password_short_error">Password is too short!</string>
+    <string name="validation_success">Success</string>
+    <string name="form_validation_failed">Form validation failed</string>
+
+
+    <string name="red_theme">Red</string>
+    <string name="blue_theme">Blue</string>
+    <string name="green_theme">Green</string>
+    <string name="system_theme">System</string>
+    <string name="choose_theme_button">Choose theme</string>
+
+
+    <string name="add_note_description">Add Note</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+
+
+    <string name="title_hint">Title</string>
+    <string name="content_hint">Content</string>
+
+
 </resources>
