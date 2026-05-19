@@ -13,6 +13,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,6 +24,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.hw6.R
 import com.example.hw6.presentation.screen.details.DetailsScreen
 import com.example.hw6.presentation.screen.main.MainScreen
+import com.example.hw6.util.CrashlyticsInit
 import java.util.Map.entry
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,6 +38,12 @@ fun CustomNavHost(
     }
 
     val currentRoute = backStack.lastOrNull() ?: Main
+    LaunchedEffect(currentRoute) {
+        when (currentRoute) {
+            is Details -> CrashlyticsInit.logDetails(currentRoute.bookId)
+            Main -> CrashlyticsInit.logScreen("Main")
+        }
+    }
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(

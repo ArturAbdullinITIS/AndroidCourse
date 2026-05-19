@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
+    alias(libs.plugins.firebase.crashlytics) apply false
 }
 
 android {
@@ -94,7 +96,14 @@ dependencies {
     // Icons
     implementation(libs.androidx.material.icons.extended)
 
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.crashlytics)
+
     implementation(libs.androidx.core.ktx)
+    ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
