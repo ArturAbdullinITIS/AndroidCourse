@@ -3,6 +3,7 @@ package com.example.hw6.domain.usecase
 
 import com.example.hw6.domain.model.Book
 import com.example.hw6.domain.repository.BookRepository
+import com.example.hw6.util.DataSource
 import com.example.hw6.util.Result
 import javax.inject.Inject
 
@@ -14,6 +15,9 @@ class SearchBooksUseCase @Inject constructor(
         startIndex: Int = 0,
         maxResults: Int = 20
     ): Result<List<Book>> {
+        if (query.isBlank()) {
+            return Result.Success(emptyList(), DataSource.API)
+        }
         return repository.searchBooks(query, startIndex, maxResults)
     }
 }

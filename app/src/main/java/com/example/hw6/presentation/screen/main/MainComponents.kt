@@ -44,20 +44,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.hw6.R
+import com.example.hw6.domain.model.Book
 
 
 @Composable
 fun BookItem(
-    title: String,
-    authors: List<String>?,
-    thumbnail: String?,
-    pageCount: Int,
-    averageRating: Double?,
+    book: Book,
     onClick: () -> Unit,
 ) {
     val imageModel = when {
-        thumbnail.isNullOrEmpty() -> R.drawable.ic_no_image_placeholder
-        else -> thumbnail
+        book.thumbnail.isNullOrEmpty() -> R.drawable.ic_no_image_placeholder
+        else -> book.thumbnail
     }
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -99,20 +96,20 @@ fun BookItem(
                 verticalArrangement = Arrangement.SpaceAround
             ) {
                 Text(
-                    text = title,
+                    text = book.title,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
 
                 Text(
-                    text = authors?.joinToString(", ") ?: stringResource(R.string.unknown_author),
+                    text = book.authors?.joinToString(", ") ?: stringResource(R.string.unknown_author),
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = stringResource(R.string.pages, pageCount),
+                    text = stringResource(R.string.pages, book.pageCount),
                     style = MaterialTheme.typography.bodySmall
                 )
 
@@ -121,7 +118,7 @@ fun BookItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = "Rating: ${averageRating ?: stringResource(R.string.n_a)}",
+                        text = "Rating: ${book.averageRating ?: stringResource(R.string.n_a)}",
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
@@ -202,11 +199,16 @@ fun SearchFieldPreview() {
 @Composable
 fun BookItemPreview() {
     BookItem(
-        title = "The Great Gatsby",
-        authors = listOf("F. Scott Fitzgerald"),
-        thumbnail = null,
-        pageCount = 180,
-        averageRating = 4.2,
+        book = Book(
+            id = "gatsby",
+            title = "The Great Gatsby",
+            authors = listOf("F. Scott Fitzgerald"),
+            description = null,
+            thumbnail = null,
+            smallThumbnail = null,
+            pageCount = 180,
+            averageRating = 4.2,
+        ),
         onClick = {},
     )
 }

@@ -1,3 +1,5 @@
+package com.example.hw6.presentation
+
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build

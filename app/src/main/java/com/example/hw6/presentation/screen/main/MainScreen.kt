@@ -19,33 +19,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hw6.R
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.compose
-import kotlin.collections.isNotEmpty
 
 @Composable
 fun MainScreen(
     onNavigateToDetails: (String) -> Unit,
-    snackbarHostState: SnackbarHostState
-) {
-    MainContent(onNavigateToDetails, snackbarHostState)
-}
-
-@Composable
-private fun MainContent(
-    onNavigateToDetails: (String) -> Unit,
     snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val query by viewModel.query.collectAsState()
+    val onCommand = remember(viewModel) { viewModel::processCommand }
 
     LaunchedEffect(viewModel.snackMessage) {
         viewModel.snackMessage.collectLatest { message ->
@@ -53,6 +41,22 @@ private fun MainContent(
         }
     }
 
+    MainContent(
+        state = state,
+        query = query,
+        onCommand = onCommand,
+        onNavigateToDetails = onNavigateToDetails,
+    )
+}
+
+@Composable
+private fun MainContent(
+    state: MainState,
+    query: String,
+    onCommand: (MainCommand) -> Unit,
+    onNavigateToDetails: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -61,10 +65,10 @@ private fun MainContent(
         SearchField(
             value = query,
             onValueChange = {
-                viewModel.processCommand(MainCommand.InputQuery(it))
+                onCommand(MainCommand.InputQuery(it))
             },
             onSearch = {
-                viewModel.processCommand(MainCommand.SearchBooks(query))
+                onCommand(MainCommand.SearchBooks(query))
             }
         )
         when (val currentState = state) {
@@ -106,14 +110,10 @@ private fun MainContent(
                     LazyColumn{
                         itemsIndexed(
                             items = currentState.books,
-                            key = { index, book -> "${index}_${book.id}" }
+                            key = { _, book -> book.id }
                         ) { _, book ->
                             BookItem(
-                                title = book.title,
-                                authors = book.authors,
-                                thumbnail = book.thumbnail,
-                                pageCount = book.pageCount,
-                                averageRating = book.averageRating,
+                                book = book,
                                 onClick = { onNavigateToDetails(book.id) },
                             )
                         }
@@ -131,7 +131,7 @@ private fun MainContent(
                                     } else {
                                         Button(
                                             onClick = {
-                                                viewModel.processCommand(MainCommand.LoadNextPage)
+                                                onCommand(MainCommand.LoadNextPage)
                                             }
                                         ) {
                                             Text(text = stringResource(R.string.load_more))

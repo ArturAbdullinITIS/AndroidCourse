@@ -1,6 +1,6 @@
 package com.example.hw6.presentation.screen.main
 
-import android.R.id.message
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -187,6 +187,7 @@ sealed interface MainCommand {
     object LoadNextPage : MainCommand
 }
 
+@Immutable
 sealed class MainState {
     object Initial : MainState()
     object Searching : MainState()
